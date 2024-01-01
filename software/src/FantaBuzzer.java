@@ -5,6 +5,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -82,6 +84,7 @@ public class FantaBuzzer extends JFrame{
         start.setBounds((width - (distance / 2) - (buttonWidth * 2)) / 2, (distance*14) + titleHeight + subtitleHeight + (labelHeight * 8) , buttonWidth, buttonHeight);
         start.setVisible(true);
         start.setFocusable(false);
+        start.addMouseListener(new FantaBuzzerListener());
         add(start);
 
         exit = new JButton("Esci");
@@ -89,6 +92,7 @@ public class FantaBuzzer extends JFrame{
         exit.setBounds((width) / 2 + (distance / 2), (distance*14) + titleHeight + subtitleHeight + (labelHeight * 8) , buttonWidth, buttonHeight);
         exit.setVisible(true);
         exit.setFocusable(false);
+        exit.addMouseListener(new FantaBuzzerListener());
         add(exit);
 
         this.setVisible(true);
@@ -109,5 +113,26 @@ public class FantaBuzzer extends JFrame{
             e.printStackTrace();
             return new Font("Arial", Font.PLAIN, 14); // Fallback a un font predefinito in caso di errore
         }
+    }
+
+    private class FantaBuzzerListener implements MouseListener{
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if(e.getSource() == exit) System.exit(1);
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {}
+
+        @Override
+        public void mouseReleased(MouseEvent e) {}
+
+        @Override
+        public void mouseEntered(MouseEvent e) {}
+
+        @Override
+        public void mouseExited(MouseEvent e) {}
+        
     }
 }
