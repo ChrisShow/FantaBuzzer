@@ -1,10 +1,13 @@
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.Dimension;
@@ -21,6 +24,8 @@ public class FantaBuzzer extends JFrame{
     private JButton exit;
     private JLabel creditLabel;
     private JTextField creditField;
+    private int teams = 0, credits = 0;
+    private String stringTeams = "";
 
     public FantaBuzzer(){
 
@@ -97,18 +102,18 @@ public class FantaBuzzer extends JFrame{
 
         start = new JButton("Inizia");
         start.setFont(caricaFont(20));
-        start.setBounds((width - (distance / 2) - (buttonWidth * 2)) / 2, (distance*15) + titleHeight + subtitleHeight + (labelHeight * 9) , buttonWidth, buttonHeight);
+        start.setBounds((width - (distance / 2) - (buttonWidth * 2)) / 2, (distance*14) + titleHeight + subtitleHeight + (labelHeight * 9) , buttonWidth, buttonHeight);
         start.setVisible(true);
         start.setFocusable(false);
-        start.addMouseListener(new FantaBuzzerListener());
+        start.addActionListener(new FantaBuzzerListener());
         add(start);
 
         exit = new JButton("Esci");
         exit.setFont(caricaFont(20));
-        exit.setBounds((width) / 2 + (distance / 2), (distance*15) + titleHeight + subtitleHeight + (labelHeight * 9) , buttonWidth, buttonHeight);
+        exit.setBounds((width) / 2 + (distance / 2), (distance*14) + titleHeight + subtitleHeight + (labelHeight * 9) , buttonWidth, buttonHeight);
         exit.setVisible(true);
         exit.setFocusable(false);
-        exit.addMouseListener(new FantaBuzzerListener());
+        exit.addActionListener(new FantaBuzzerListener());
         add(exit);
 
         this.setVisible(true);
@@ -127,28 +132,55 @@ public class FantaBuzzer extends JFrame{
             return font.deriveFont(Font.PLAIN, dimensione);
         } catch (java.awt.FontFormatException | java.io.IOException e) {
             e.printStackTrace();
-            return new Font("Arial", Font.PLAIN, 14); // Fallback a un font predefinito in caso di errore
+            return new Font("Arial", Font.PLAIN, dimensione); // Fallback a un font predefinito in caso di errore
         }
     }
 
-    private class FantaBuzzerListener implements MouseListener{
+    private boolean checkValues() {
+        for (int i = 0; i < fields.length; i++) {
+            if(!fields[i].getText().equals("")){
+                this.stringTeams += fields[i].getText() + "-";
+                this.teams++;
+            } else {
+                this.stringTeams += "null-";
+            }               
+        }
+        if(this.teams < 6){
+            JOptionPane.showMessageDialog(null, "Minimo di squadre non raggiunto: le squadre sono meno di 6", "Minimo di squadre non raggiunto", JOptionPane.DEFAULT_OPTION);
+            return false;
+        }
+        if(this.teams % 2 == 1){
+            JOptionPane.showMessageDialog(null, "Le squadre sono dispari", "Numero di squadre dispari", JOptionPane.DEFAULT_OPTION);
+            return false;
+        }
+        this.stringTeams = this.stringTeams.substring(0, this.stringTeams.length() - 1);
 
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            if(e.getSource() == exit) System.exit(1);
+        try{
+            this.credits = Integer.parseInt(creditField.getText());
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Controlla il valore dei crediti", "Errore sul valore dei crediti", JOptionPane.DEFAULT_OPTION);
+            return false;
+        }
+        if(this.credits <= 0){
+            JOptionPane.showMessageDialog(null, "Crediti insufficienti", "Errore sul valore dei crediti", JOptionPane.DEFAULT_OPTION);
+            return false;
         }
 
-        @Override
-        public void mousePressed(MouseEvent e) {}
+        return true;
+    }
+
+    private class FantaBuzzerListener implements ActionListener{
 
         @Override
-        public void mouseReleased(MouseEvent e) {}
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == exit) System.exit(1);
 
-        @Override
-        public void mouseEntered(MouseEvent e) {}
+            if(e.getSource() == start)
+                if(checkValues()){
+                    dispose();
+                    new Board();
+                }        
+        }
 
-        @Override
-        public void mouseExited(MouseEvent e) {}
-        
     }
 }
