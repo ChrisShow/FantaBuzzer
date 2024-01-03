@@ -178,7 +178,7 @@ public class FantaBuzzer extends JFrame{
             if(e.getSource() == start)
                 if(checkValues()){
                     dispose();
-                    new Board();
+                    new Board(stringTeams, teams, credits);
                 }        
         }
 
