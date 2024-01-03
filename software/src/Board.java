@@ -18,7 +18,6 @@ public class Board extends JFrame {
         int boardWidth = this.getWidth();
         int boardHeight = this.getHeight();
 
-
         int distance = 10;
 
         setVisible(true);
@@ -26,7 +25,7 @@ public class Board extends JFrame {
     }
 
     public static void main(String[] args) {
-        Board board = new Board();
+        Board board = new Board("s1-s2-null-null-s3-s4-s5-s6", 6, 500);
     }
 
     
