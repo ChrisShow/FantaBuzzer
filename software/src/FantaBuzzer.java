@@ -19,6 +19,8 @@ public class FantaBuzzer extends JFrame{
     private JTextField[] fields;
     private JButton start;
     private JButton exit;
+    private JLabel creditLabel;
+    private JTextField creditField;
 
     public FantaBuzzer(){
 
@@ -56,8 +58,8 @@ public class FantaBuzzer extends JFrame{
         subtitle.setVisible(true);
         add(subtitle);
 
-        int labelWidth = 100, labelHeight = 50;
-        int fieldWidth = 300, fieldHeight = 50;
+        int labelWidth = 100, labelHeight = 45;
+        int fieldWidth = 300, fieldHeight = 45;
         
         labels = new JLabel[8];
         fields = new JTextField[8];
@@ -77,11 +79,25 @@ public class FantaBuzzer extends JFrame{
             add(fields[i]);
         }
 
+        creditLabel = new JLabel("Crediti:");
+        creditLabel.setFont(caricaFont(18));
+        creditLabel.setBounds((width / 2) - (distance + labelWidth + fieldWidth) / 2, (distance * 12 + titleHeight + subtitleHeight + (labelHeight * 8)), labelWidth, labelHeight);
+        creditLabel.setVisible(true);
+        creditLabel.setVerticalAlignment(SwingConstants.CENTER);
+        add(creditLabel);
+
+        creditField = new JTextField();
+        creditField.setFont(caricaFont(18));
+        creditField.setBounds((width / 2) - ((distance + labelWidth + fieldWidth) / 2) + labelWidth + distance, (distance * 12 + titleHeight + subtitleHeight + (labelHeight * 8)), fieldWidth, fieldHeight);
+        creditField.setVisible(true);
+        creditField.setHorizontalAlignment(SwingConstants.CENTER);
+        add(creditField);
+
         int buttonWidth = 100, buttonHeight = 50;
 
         start = new JButton("Inizia");
         start.setFont(caricaFont(20));
-        start.setBounds((width - (distance / 2) - (buttonWidth * 2)) / 2, (distance*14) + titleHeight + subtitleHeight + (labelHeight * 8) , buttonWidth, buttonHeight);
+        start.setBounds((width - (distance / 2) - (buttonWidth * 2)) / 2, (distance*15) + titleHeight + subtitleHeight + (labelHeight * 9) , buttonWidth, buttonHeight);
         start.setVisible(true);
         start.setFocusable(false);
         start.addMouseListener(new FantaBuzzerListener());
@@ -89,7 +105,7 @@ public class FantaBuzzer extends JFrame{
 
         exit = new JButton("Esci");
         exit.setFont(caricaFont(20));
-        exit.setBounds((width) / 2 + (distance / 2), (distance*14) + titleHeight + subtitleHeight + (labelHeight * 8) , buttonWidth, buttonHeight);
+        exit.setBounds((width) / 2 + (distance / 2), (distance*15) + titleHeight + subtitleHeight + (labelHeight * 9) , buttonWidth, buttonHeight);
         exit.setVisible(true);
         exit.setFocusable(false);
         exit.addMouseListener(new FantaBuzzerListener());
