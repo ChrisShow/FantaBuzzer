@@ -9,8 +9,9 @@ public class FantaTimer extends JPanel implements Runnable{
     private JLabel message;
     private JButton resetButton;
     private int secondi;
+    private Board board;
 
-    public FantaTimer(int width, int height){
+    public FantaTimer(int width, int height, Board board){
         setSize(new Dimension(width, height));
 
         timer = new JLabel("30");
@@ -46,9 +47,7 @@ public class FantaTimer extends JPanel implements Runnable{
             secondi--;
             timer.setText(String.valueOf(secondi));
         }else{
-            //timer è 0
-            ((Timer) (timer.getClientProperty("timer"))).stop();
-            message.setText("Tempo scaduto!");
+            this.board.auctionTerminated();
         }
     }
 
@@ -62,22 +61,5 @@ public class FantaTimer extends JPanel implements Runnable{
     @Override
     public void run() {
 
-    }
-
-    public static void main(String[] args){
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                JFrame frame = new JFrame("FantaBuzzer");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-                FantaTimer fantaTimer = new FantaTimer(400,200);
-                frame.getContentPane().add(fantaTimer);
-
-                frame.pack();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-            }
-        });
     }
 }

@@ -46,7 +46,7 @@ public class FantaBuzzer extends JFrame{
         int titleWidth = 350, titleHeight = 90, titleFontSize = 65;
 
         title = new JLabel("FantaBuzzer");
-        title.setFont(caricaFont(titleFontSize));
+        title.setFont(UtilityClass.caricaFont(titleFontSize));
         title.setBounds((width - titleWidth) / 2, (distance*2), titleWidth, titleHeight);
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setVerticalAlignment(SwingConstants.CENTER);
@@ -56,7 +56,7 @@ public class FantaBuzzer extends JFrame{
         int subtitleWidth = 550, subtitleHeight = 50;
 
         subtitle = new JLabel("Inserisci le squadre corrispondenti ai numeri di pad");
-        subtitle.setFont(caricaFont(24));
+        subtitle.setFont(UtilityClass.caricaFont(24));
         subtitle.setBounds((width - subtitleWidth) / 2, (distance * 2) + titleHeight, subtitleWidth, subtitleHeight);
         subtitle.setHorizontalAlignment(SwingConstants.CENTER);
         subtitle.setVerticalAlignment(SwingConstants.CENTER);
@@ -70,14 +70,14 @@ public class FantaBuzzer extends JFrame{
         fields = new JTextField[8];
         for (int i = 0; i < fields.length; i++) {
             labels[i] = new JLabel("Squadra " + (i+1) + ":");
-            labels[i].setFont(caricaFont(18));
+            labels[i].setFont(UtilityClass.caricaFont(18));
             labels[i].setBounds((width / 2) - (distance + labelWidth + fieldWidth) / 2, (distance * (i+4) + titleHeight + subtitleHeight + (labelHeight * i)), labelWidth, labelHeight);
             labels[i].setVisible(true);
             labels[i].setVerticalAlignment(SwingConstants.CENTER);
             add(labels[i]);
 
             fields[i] = new JTextField();
-            fields[i].setFont(caricaFont(18));
+            fields[i].setFont(UtilityClass.caricaFont(18));
             fields[i].setBounds(((width / 2) - (distance + labelWidth + fieldWidth) / 2) + labelWidth + distance, (distance * (i+4) + titleHeight + subtitleHeight + (fieldHeight * i)), fieldWidth, fieldHeight);
             fields[i].setVisible(true);
             fields[i].setHorizontalAlignment(SwingConstants.CENTER);
@@ -85,14 +85,14 @@ public class FantaBuzzer extends JFrame{
         }
 
         creditLabel = new JLabel("Crediti:");
-        creditLabel.setFont(caricaFont(18));
+        creditLabel.setFont(UtilityClass.caricaFont(18));
         creditLabel.setBounds((width / 2) - (distance + labelWidth + fieldWidth) / 2, (distance * 12 + titleHeight + subtitleHeight + (labelHeight * 8)), labelWidth, labelHeight);
         creditLabel.setVisible(true);
         creditLabel.setVerticalAlignment(SwingConstants.CENTER);
         add(creditLabel);
 
         creditField = new JTextField();
-        creditField.setFont(caricaFont(18));
+        creditField.setFont(UtilityClass.caricaFont(18));
         creditField.setBounds((width / 2) - ((distance + labelWidth + fieldWidth) / 2) + labelWidth + distance, (distance * 12 + titleHeight + subtitleHeight + (labelHeight * 8)), fieldWidth, fieldHeight);
         creditField.setVisible(true);
         creditField.setHorizontalAlignment(SwingConstants.CENTER);
@@ -101,7 +101,7 @@ public class FantaBuzzer extends JFrame{
         int buttonWidth = 100, buttonHeight = 50;
 
         start = new JButton("Inizia");
-        start.setFont(caricaFont(20));
+        start.setFont(UtilityClass.caricaFont(20));
         start.setBounds((width - (distance / 2) - (buttonWidth * 2)) / 2, (distance*14) + titleHeight + subtitleHeight + (labelHeight * 9) , buttonWidth, buttonHeight);
         start.setVisible(true);
         start.setFocusable(false);
@@ -109,7 +109,7 @@ public class FantaBuzzer extends JFrame{
         add(start);
 
         exit = new JButton("Esci");
-        exit.setFont(caricaFont(20));
+        exit.setFont(UtilityClass.caricaFont(20));
         exit.setBounds((width) / 2 + (distance / 2), (distance*14) + titleHeight + subtitleHeight + (labelHeight * 9) , buttonWidth, buttonHeight);
         exit.setVisible(true);
         exit.setFocusable(false);
@@ -122,18 +122,6 @@ public class FantaBuzzer extends JFrame{
 
     public static void main(String[] args) {
         FantaBuzzer fantaBuzzer = new FantaBuzzer();
-    }
-
-    private static Font caricaFont(int dimensione) {
-        try {
-            Font font = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("software/resources/coolveticaRG.otf"));
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(font);
-            return font.deriveFont(Font.PLAIN, dimensione);
-        } catch (java.awt.FontFormatException | java.io.IOException e) {
-            e.printStackTrace();
-            return new Font("Arial", Font.PLAIN, dimensione); // Fallback a un font predefinito in caso di errore
-        }
     }
 
     private boolean checkValues() {
