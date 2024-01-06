@@ -64,7 +64,7 @@ public class Board extends JFrame {
     }
 
     public static void main(String[] args) {
-        Board board = new Board("s1-s2-s7-s8-s3-s4-s5-s6", 8, 500);
+        Board board = new Board("s1-s2-null-null-s3-s4-s5-s6", 6, 500);
     }
 
     private class BoardKeyboardListener implements KeyListener{
