@@ -38,9 +38,9 @@ public class Player extends JPanel {
         int amountY = nameLabelY + nameLabelHeight + distance;
         int amountWidth = (width - (distance * 3)) / 2, amountHeight = nameLabelHeight * 2;
 
-        amount = new JLabel("555");
+        amount = new JLabel("");
         amount.setBounds(nameLabelX, amountY, amountWidth, amountHeight);
-        amount.setOpaque(true);
+        amount.setOpaque(false);
         amount.setBackground(new Color(62, 86, 34));
         amount.setForeground(Color.WHITE);
         amount.setFont(UtilityClass.caricaFont(50));
@@ -87,5 +87,17 @@ public class Player extends JPanel {
         creditTextLabel.setVisible(true);
         add(creditTextLabel);
     }
+
+    public void newOffer(int offer) {
+        this.amount.setText("" + offer);
+        this.amount.setOpaque(true);
+    }
+
+    public void cancelOffer() {
+        this.amount.setText("");
+        this.amount.setOpaque(false);
+    }
+
+
     
 }
