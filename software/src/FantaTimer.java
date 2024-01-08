@@ -31,13 +31,35 @@ public class FantaTimer extends JPanel implements Runnable{
     }
 
     public void resetTimer(){
-        secondi=30;
-        timer.setText(String.valueOf(secondi));
-        ((Timer) (timer.getClientProperty("timer"))).restart();
+        Timer timerClientProperty = (Timer) timer.getClientProperty("timer");
+        if (timerClientProperty != null) {
+            timerClientProperty.restart();
+        } else {
+            // Se il timer non è stato associato, creane uno nuovo
+            Timer newTimer = new Timer(1000, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    updateTimer();
+                }
+            });
+            newTimer.setInitialDelay(0);
+            newTimer.start();
+
+            // Associa il nuovo timer come client property
+            timer.putClientProperty("timer", newTimer);
+        }
     }
 
     @Override
     public void run() {
+/*         Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateTimer();
+            }
+        });
+        timer.setInitialDelay(0);
+        timer.start(); */
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -46,5 +68,8 @@ public class FantaTimer extends JPanel implements Runnable{
         });
         timer.setInitialDelay(0);
         timer.start();
+    
+        // Associa il timer come client property
+        this.timer.putClientProperty("timer", timer);
     }
 }

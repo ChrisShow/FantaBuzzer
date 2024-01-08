@@ -72,6 +72,7 @@ public class Board extends JFrame {
         startAuction = new JButton("Inizia Asta");
         startAuction.setFont(UtilityClass.caricaFont(25));
         startAuction.addActionListener(new BoardListener());
+        startAuction.setFocusable(false);
         startAuction.setBounds((int)(screenWidth - startAuctionWidth) / 2, (distance * 5), startAuctionWidth, startAuctionHeight);
         startAuction.setVisible(true);
         add(startAuction);
@@ -101,13 +102,13 @@ public class Board extends JFrame {
                         this.offer += 2;
                         player.newOffer(this.offer);
                     }
-                        
                     else
                         player.cancelOffer();
                     player.repaint();
                 }
                 i++;
             }
+            repaint();
         }
     }
 
