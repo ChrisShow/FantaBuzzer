@@ -6,15 +6,16 @@ import javax.swing.*;
 public class Player extends JPanel {
 
     private String name;
-    private int credits;
+    private int credits, id;
     private JLabel nameLabel;
     private JLabel amount;
     private JLabel creditLabel;
     private JLabel amountTextLabel;
     private JLabel creditTextLabel;
 
-    public Player(String name, int credits, int width, int height){
+    public Player(String name, int credits, int id, int width, int height){
 
+        this.id = id;
         this.name = name;
         this.credits = credits;
 
@@ -99,6 +100,76 @@ public class Player extends JPanel {
         this.amount.setOpaque(false);
     }
 
+    @Override
+    public boolean equals(Object o){
+        if(o == null) return false;
+        if(!(o instanceof Player)) return false;
+        return this.id == ((Player) o).getId();
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public JLabel getNameLabel() {
+        return nameLabel;
+    }
+
+    public void setNameLabel(JLabel nameLabel) {
+        this.nameLabel = nameLabel;
+    }
+
+    public JLabel getAmount() {
+        return amount;
+    }
+
+    public void setAmount(JLabel amount) {
+        this.amount = amount;
+    }
+
+    public JLabel getCreditLabel() {
+        return creditLabel;
+    }
+
+    public void setCreditLabel(JLabel creditLabel) {
+        this.creditLabel = creditLabel;
+    }
+
+    public JLabel getAmountTextLabel() {
+        return amountTextLabel;
+    }
+
+    public void setAmountTextLabel(JLabel amountTextLabel) {
+        this.amountTextLabel = amountTextLabel;
+    }
+
+    public JLabel getCreditTextLabel() {
+        return creditTextLabel;
+    }
+
+    public void setCreditTextLabel(JLabel creditTextLabel) {
+        this.creditTextLabel = creditTextLabel;
+    }
+    
     
 }

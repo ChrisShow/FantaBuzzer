@@ -20,6 +20,7 @@ public class Board extends JFrame {
     private boolean firstStartTimer;
     private JButton startAuction;
     private FantaTimer fantaTimer;
+    private Player lastOfferPlayer;
 
     public Board(String stringTeams, int teams, int credits) {
 
@@ -53,7 +54,7 @@ public class Board extends JFrame {
         int j = 0;
         for (int i = 0; i < strings.length; i++) {
             if(!strings[i].equals("null")){
-                Player p = new Player(strings[i], credits, playerWidth, playerHeight);
+                Player p = new Player(strings[i], credits, i, playerWidth, playerHeight);
                 int currentPlayerX = (distance * ((j % (teams / 2)) + 1)) + (playerWidth * (j % (teams / 2)));
                 int currentPlayerY = (playerHeight + distance) + ((distance + playerHeight) * ((int) j / (teams / 2)));
                 p.setBounds(currentPlayerX, currentPlayerY, playerWidth, playerHeight);
@@ -96,24 +97,25 @@ public class Board extends JFrame {
         if(!firstStartTimer){
             int i = 0;
             for (Player player : players) {
-                if(player != null){
-                    if(i == num){
+                if(i == num){
+                    if(player != null && player != lastOfferPlayer){
+                        lastOfferPlayer = player;
                         this.fantaTimer.resetTimer();
                         this.offer += 2;
                         player.newOffer(this.offer);
                     }
-                    else
-                        player.cancelOffer();
-                    player.repaint();
                 }
+                else if(players.get(num) != null)
+                    player.cancelOffer();
                 i++;
+                player.repaint();
             }
             repaint();
         }
     }
 
     public static void main(String[] args) {
-        Board board = new Board("s1-s2-null-null-s3-s4-s5-s6", 6, 500);
+        Board board = new Board("s1-s2-s3-s4-s5-s6-null-null", 6, 500);
     }
 
     private class BoardKeyboardListener implements KeyListener{
@@ -142,7 +144,7 @@ public class Board extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == startAuction){
                 if(firstStartTimer) {
-                    fantaTimer.run();
+                    fantaTimer.resetTimer();
                     firstStartTimer = false;
                 }
             }
