@@ -11,6 +11,9 @@ public class FantaTimer extends JPanel implements Runnable{
     private Timer timerInstance;
 
     public FantaTimer(int width, int height, Board board) {
+
+        this.board = board;
+
         setSize(new Dimension(width, height));
 
         timer = new JLabel("30");
@@ -35,6 +38,7 @@ public class FantaTimer extends JPanel implements Runnable{
             secondi--;
             timer.setText(String.valueOf(secondi));
         } else {
+            timerInstance.stop();
             this.board.auctionTerminated();
         }
     }

@@ -21,6 +21,7 @@ public class Board extends JFrame {
     private JButton startAuction;
     private FantaTimer fantaTimer;
     private Player lastOfferPlayer;
+    private Footballer actualFootballer = new Footballer("FRANCESCO TOTTI");
 
     public Board(String stringTeams, int teams, int credits) {
 
@@ -90,7 +91,10 @@ public class Board extends JFrame {
     }
 
     public void auctionTerminated(){
-        //TODO
+        System.out.println("Ciao");
+        this.firstStartTimer = !this.firstStartTimer;
+        this.lastOfferPlayer.setCredits(this.lastOfferPlayer.getCredits() - this.offer);
+        new EndAuction(lastOfferPlayer, offer, actualFootballer);
     }
 
     private void newOffer(int num){
@@ -105,10 +109,14 @@ public class Board extends JFrame {
                         player.newOffer(this.offer);
                     }
                 }
-                else if(players.get(num) != null)
-                    player.cancelOffer();
+                else {
+                    if(players.get(num) != null)
+                        if(player != null)
+                            player.cancelOffer();
+                }
                 i++;
-                player.repaint();
+                if(player != null)
+                    player.repaint();
             }
             repaint();
         }
@@ -146,6 +154,7 @@ public class Board extends JFrame {
                 if(firstStartTimer) {
                     fantaTimer.resetTimer();
                     firstStartTimer = false;
+                    startAuction.setEnabled(false);
                 }
             }
         }

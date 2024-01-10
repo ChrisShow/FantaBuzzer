@@ -90,7 +90,6 @@ public class Player extends JPanel {
     }
 
     public void newOffer(int offer) {
-        System.out.println("nuova offerta di " + offer);
         this.amount.setText("" + offer);
         this.amount.setOpaque(true);
     }
