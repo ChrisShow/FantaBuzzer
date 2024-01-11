@@ -1,68 +1,90 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class EndAuction extends JFrame{
 
-    public EndAuction(String playerName, int offer, String footballerName) {
+    private JButton back;
+    private JLabel backgroundLabel;
+    private JLabel winLabel;
+    private Board board;
+    private Player player;
+    private int offer;
+    private Footballer footballer;
+
+    public EndAuction(Player player, int offer, Footballer footballer, Board board) {
+
+        this.player = player;
+        this.offer = offer;
+        this.footballer = footballer;
+        this.board = board;
+
         // Ottieni le dimensioni dello schermo
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double screenWidth = screenSize.getWidth();
         double screenHeight = screenSize.getHeight();
 
-        int width = 500, height = 400;
-
-        // Creare un pannello principale che conterrà entrambi i componenti
-        JPanel mainPanel = new JPanel(null);
-        mainPanel.setBounds(0, 0, width, height);
-
-        // Creare un pannello per lo sfondo animato
-        JPanel animatedPanel = new JPanel();
-        animatedPanel.setBounds(0, 0, width, height);
-
-        // Caricare l'immagine GIF come sfondo animato
-        ImageIcon backgroundIcon = new ImageIcon("software\\resources\\images\\animated_background.gif");
-        JLabel backgroundLabel = new JLabel(backgroundIcon);
-        animatedPanel.add(backgroundLabel);
-        mainPanel.add(animatedPanel);
-        
-
-        // Caricare un'immagine
-        ImageIcon footballerIcon = new ImageIcon("software\\resources\\images\\coin.png");
-        Image img = footballerIcon.getImage();
-        Image newImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        footballerIcon.setImage(newImg);
-
-        String s =  "<html><font color='yellow'>" + playerName + " </font>acquisisce le prestazioni sportive di <br> <font color='yellow'>"
-                + footballerName + "</font> per <font color='yellow'>" + offer + " </font>crediti</html>";
-
-        JLabel winLabel = new JLabel(s, footballerIcon, JLabel.RIGHT);
-        winLabel.setBounds(10, 10, width - 10, height - 10);
-        winLabel.setFont(UtilityClass.caricaFont(20));
-        winLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        winLabel.setVerticalAlignment(SwingConstants.CENTER);
-        winLabel.setOpaque(true);
-        winLabel.setForeground(Color.WHITE);
-        winLabel.setIconTextGap(15);
-        mainPanel.add(winLabel);
+        int width = 600, height = 600;    
+        int backWidth = 150, backHeight = 50, distanceFromLabel = 100; 
+        int winLabelHeight = 300, winLabelY = 50;
 
         // Impostare la finestra principale
         setBounds((int)(screenWidth - width) / 2, (int)(screenHeight - height) / 2, width, height);
         setResizable(false);
-        setTitle("Asta vinta da " + playerName);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Asta vinta da " + this.player.getName());
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setLayout(null);
 
-        // Aggiungere il pannello principale al frame
-        add(mainPanel);
+        // Caricare l'immagine GIF come sfondo animato
+        ImageIcon backgroundIcon = new ImageIcon("software\\resources\\images\\animated_background.gif");
+        backgroundLabel = new JLabel(backgroundIcon);
+        backgroundLabel.setBounds(0, 0, width, height);
+
+        String s =  "<html><center><font color='#C17817'>" + this.player.getName() + " </font><br>" +
+                    "acquisisce le prestazioni<br>sportive di<br><font color='#C17817'>" +
+                    this.footballer.getName() + "</font><br>per <font color='#C17817'>" + offer + 
+                    " </font>crediti</center></html>";
+
+        winLabel = new JLabel(s);
+        winLabel.setBounds(0, winLabelY, width, winLabelHeight);
+        winLabel.setFont(UtilityClass.caricaFont(50));
+        winLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        winLabel.setVerticalAlignment(SwingConstants.CENTER);
+        winLabel.setForeground(new Color(230, 225, 197));
+
+        back = new JButton("Chiudi");
+        back.setBounds((width - backWidth) / 2, (winLabelY + winLabelHeight + distanceFromLabel), backWidth, backHeight);
+        back.setFont(UtilityClass.caricaFont(30));
+        back.setForeground(Color.BLACK);
+        back.setBackground(new Color(62, 86, 34));
+        back.setFocusable(false);
+        back.setBorder(BorderFactory.createEtchedBorder());
+        back.setVisible(true);
+
+        // Aggiungere al frame
+        add(back);
+        add(winLabel);
+        add(backgroundLabel);
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        EndAuction endAuction = new EndAuction("ChrisShowsha", 50, "Francesco Totti");
+    private class EndAuctionListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == back){
+                dispose();
+                board.resetAuction(player, offer, footballer);
+            }
+        }
+        
     }
     
 }

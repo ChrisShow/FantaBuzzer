@@ -94,13 +94,14 @@ public class Board extends JFrame {
         System.out.println("Ciao");
         this.firstStartTimer = !this.firstStartTimer;
         this.lastOfferPlayer.setCredits(this.lastOfferPlayer.getCredits() - this.offer);
-        new EndAuction(lastOfferPlayer, offer, actualFootballer);
+        new EndAuction(lastOfferPlayer, offer, actualFootballer, this);
     }
 
     private void newOffer(int num){
         if(!firstStartTimer){
             int i = 0;
             for (Player player : players) {
+                // TODO fare il non poter puntare se crediti minori di offerta
                 if(i == num){
                     if(player != null && player != lastOfferPlayer){
                         lastOfferPlayer = player;
@@ -120,6 +121,10 @@ public class Board extends JFrame {
             }
             repaint();
         }
+    }
+
+    public void resetAuction(Player player, int offer, Footballer footballer) {
+        //TODO
     }
 
     public static void main(String[] args) {
@@ -160,6 +165,5 @@ public class Board extends JFrame {
         }
         
     }
-
 
 }
