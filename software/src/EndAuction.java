@@ -63,7 +63,8 @@ public class EndAuction extends JFrame{
         back.setBounds((width - backWidth) / 2, (winLabelY + winLabelHeight + distanceFromLabel), backWidth, backHeight);
         back.setFont(UtilityClass.caricaFont(30));
         back.setForeground(Color.BLACK);
-        back.setBackground(new Color(62, 86, 34));
+        back.setBackground(Color.GREEN);
+        back.addActionListener(new EndAuctionListener());
         back.setFocusable(false);
         back.setBorder(BorderFactory.createEtchedBorder());
         back.setVisible(true);
