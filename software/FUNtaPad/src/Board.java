@@ -189,7 +189,6 @@ public class Board extends JFrame {
         } catch(Exception e){
             e.printStackTrace();
         }
-        System.out.println(footballers.toString());
     }
 
     public static void main(String[] args) {
