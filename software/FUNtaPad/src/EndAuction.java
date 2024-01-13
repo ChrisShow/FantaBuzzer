@@ -23,7 +23,9 @@ public class EndAuction extends JFrame{
 
         this.player = player;
         this.offer = offer;
-        this.footballer = footballer;
+        this.footballer = new Footballer(1,"P","Por", "Ruh","Inter",
+                50,30,20,50,30,20,
+                100,100);
         this.board = board;
 
         // Ottieni le dimensioni dello schermo
@@ -43,7 +45,7 @@ public class EndAuction extends JFrame{
         setLayout(null);
 
         // Caricare l'immagine GIF come sfondo animato
-        ImageIcon backgroundIcon = new ImageIcon("software\\resources\\images\\animated_background.gif");
+        ImageIcon backgroundIcon = new ImageIcon("software\\FUNtaPad\\resources\\images\\animated_background.gif");
         backgroundLabel = new JLabel(backgroundIcon);
         backgroundLabel.setBounds(0, 0, width, height);
 
