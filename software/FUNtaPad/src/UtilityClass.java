@@ -9,7 +9,7 @@ public final class UtilityClass {
 
     public static Font caricaFont(int size) {
         try {
-            Font font = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("software/resources/fonts/coolveticaRG.otf"));
+            Font font = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("software/FUNtaPad/resources/fonts/coolveticaRG.otf"));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(font);
             return font.deriveFont(Font.PLAIN, size);

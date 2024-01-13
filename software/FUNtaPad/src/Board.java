@@ -1,7 +1,6 @@
+import org.apache.poi.ss.usermodel.*;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +9,6 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.LinkedList;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,7 +22,7 @@ public class Board extends JFrame {
     private FantaTimer fantaTimer;
     private LinkedList<Footballer> footballers;
     private Player lastOfferPlayer;
-    private Footballer actualFootballer = new Footballer("FRANCESCO TOTTI");
+    private Footballer actualFootballer;
 
     public Board(String stringTeams, int teams, int credits) {
 
@@ -136,40 +134,62 @@ public class Board extends JFrame {
     private void initFootballers(){
         footballers = new LinkedList<>();
         try {
-            String filePath = "software/resources/files/Quotazioni_Fantacalcio_Stagione_2023_24.xlsx";
+            String filePath = "software/FUNtaPad/resources/files/Quotazioni_Fantacalcio_Stagione_2023_24.xlsx";
             FileInputStream fileInputStream = new FileInputStream(new File(filePath));
             Workbook workbook = WorkbookFactory.create(fileInputStream);
 
-            // Assume che ci sia solo una foglio di lavoro (worksheet)
+            // Assume che ci sia solo un foglio di lavoro (worksheet)
             Sheet sheet = workbook.getSheetAt(0);
 
-            // Itera sulle righe del foglio di lavoro
+            int i = 0;
             for (Row row : sheet) {
-                // Itera sulle celle di ogni riga
-                for (Cell cell : row) {
-                    // Leggi il contenuto della cella
-                    switch (cell.getCellType()) {
-                        case STRING:
-                            System.out.print(cell.getStringCellValue() + "\t");
-                            break;
-                        case NUMERIC:
-                            System.out.print(cell.getNumericCellValue() + "\t");
-                            break;
-                        case BOOLEAN:
-                            System.out.print(cell.getBooleanCellValue() + "\t");
-                            break;
-                        case BLANK:
-                            System.out.print("[BLANK]\t");
-                            break;
-                        default:
-                            System.out.print("[UNKNOWN]\t");
+                boolean nextRow = false;
+                if(i > 1) {
+                    double id = 0.0, actualValue = 0.0, initialValue = 0.0, valueDiff = 0.0,
+                            actualValueMantra = 0.0, initialValueMantra = 0.0,
+                            valueDiffMantra = 0.0, FVM = 0.0, FVMMantra = 0.0;
+                    String role = "", mantraRole = "", surname = "", team = "";
+                    int j = 0;
+                    for (Cell cell : row) {
+                        switch (cell.getCellType()) {
+                            case STRING:
+                                if(j == 1) role = cell.getStringCellValue();
+                                if(j == 2) mantraRole = cell.getStringCellValue();
+                                if(j == 3) surname = cell.getStringCellValue();
+                                if(j == 4) team = cell.getStringCellValue();
+                                break;
+                            case NUMERIC:
+                                if(j == 0) id = cell.getNumericCellValue();
+                                if(j == 5) actualValue = cell.getNumericCellValue();
+                                if(j == 6) initialValue = cell.getNumericCellValue();
+                                if(j == 7) valueDiff = cell.getNumericCellValue();
+                                if(j == 8) actualValueMantra = cell.getNumericCellValue();
+                                if(j == 9) initialValueMantra = cell.getNumericCellValue();
+                                if(j == 10) valueDiffMantra = cell.getNumericCellValue();
+                                if(j == 11) FVM = cell.getNumericCellValue();
+                                if(j == 12) FVMMantra = cell.getNumericCellValue();
+                                break;
+                            case BLANK:
+                                nextRow = true;
+                                break;
+                            default:
+                                System.out.print("Unknown\t");
+                        }
+                        j++;
+                        if(nextRow) break;
                     }
+                    this.footballers.addLast(new Footballer(id,role,mantraRole,surname,
+                                                    team,actualValue,initialValue,valueDiff,
+                                                    actualValueMantra,initialValueMantra,
+                                                    valueDiffMantra,FVM,FVMMantra));
                 }
+                i++;
                 System.out.println(); // Vai a capo dopo ogni riga
             }
         } catch(Exception e){
-            System.out.println("Errore nella lettura del file");
+            e.printStackTrace();
         }
+        System.out.println(footballers.toString());
     }
 
     public static void main(String[] args) {

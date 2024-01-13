@@ -49,7 +49,7 @@ public class EndAuction extends JFrame{
 
         String s =  "<html><center><font color='#C17817'>" + this.player.getName() + " </font><br>" +
                     "acquisisce le prestazioni<br>sportive di<br><font color='#C17817'>" +
-                    this.footballer.getName() + "</font><br>per <font color='#C17817'>" + offer + 
+                    this.footballer.getSurname() + "</font><br>per <font color='#C17817'>" + offer +
                     " </font>crediti</center></html>";
 
         winLabel = new JLabel(s);
