@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
@@ -20,6 +22,7 @@ public class Board extends JFrame {
     private boolean firstStartTimer;
     private JButton startAuction;
     private FantaTimer fantaTimer;
+    private LinkedList<Footballer> footballers;
     private Player lastOfferPlayer;
     private Footballer actualFootballer = new Footballer("FRANCESCO TOTTI");
 
@@ -86,6 +89,9 @@ public class Board extends JFrame {
         fantaTimer.setVisible(true);
         add(fantaTimer);
 
+        //Preleva i gicatori dal listone e li salva come oggetti
+        initFootballers();
+
         setVisible(true);
         
     }
@@ -125,6 +131,45 @@ public class Board extends JFrame {
 
     public void resetAuction(Player player, int offer, Footballer footballer) {
         //TODO
+    }
+
+    private void initFootballers(){
+        footballers = new LinkedList<>();
+        try {
+            String filePath = "software/resources/files/Quotazioni_Fantacalcio_Stagione_2023_24.xlsx";
+            FileInputStream fileInputStream = new FileInputStream(new File(filePath));
+            Workbook workbook = WorkbookFactory.create(fileInputStream);
+
+            // Assume che ci sia solo una foglio di lavoro (worksheet)
+            Sheet sheet = workbook.getSheetAt(0);
+
+            // Itera sulle righe del foglio di lavoro
+            for (Row row : sheet) {
+                // Itera sulle celle di ogni riga
+                for (Cell cell : row) {
+                    // Leggi il contenuto della cella
+                    switch (cell.getCellType()) {
+                        case STRING:
+                            System.out.print(cell.getStringCellValue() + "\t");
+                            break;
+                        case NUMERIC:
+                            System.out.print(cell.getNumericCellValue() + "\t");
+                            break;
+                        case BOOLEAN:
+                            System.out.print(cell.getBooleanCellValue() + "\t");
+                            break;
+                        case BLANK:
+                            System.out.print("[BLANK]\t");
+                            break;
+                        default:
+                            System.out.print("[UNKNOWN]\t");
+                    }
+                }
+                System.out.println(); // Vai a capo dopo ogni riga
+            }
+        } catch(Exception e){
+            System.out.println("Errore nella lettura del file");
+        }
     }
 
     public static void main(String[] args) {
