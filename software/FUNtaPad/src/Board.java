@@ -184,7 +184,6 @@ public class Board extends JFrame {
                                                     valueDiffMantra,FVM,FVMMantra));
                 }
                 i++;
-                System.out.println(); // Vai a capo dopo ogni riga
             }
         } catch(Exception e){
             e.printStackTrace();
