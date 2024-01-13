@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.LinkedList;
 
 import javax.swing.*;
 
@@ -7,6 +8,7 @@ public class Player extends JPanel {
 
     private String name;
     private int credits, id;
+    private LinkedList<Footballer> footballerList;
     private JLabel nameLabel;
     private JLabel amount;
     private JLabel creditLabel;
@@ -169,6 +171,12 @@ public class Player extends JPanel {
     public void setCreditTextLabel(JLabel creditTextLabel) {
         this.creditTextLabel = creditTextLabel;
     }
-    
-    
+
+    public LinkedList<Footballer> getFootballerList() {
+        return footballerList;
+    }
+
+    public void setFootballerList(LinkedList<Footballer> footballerList) {
+        this.footballerList = footballerList;
+    }
 }
