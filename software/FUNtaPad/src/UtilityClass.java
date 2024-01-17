@@ -1,11 +1,11 @@
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.GraphicsEnvironment;
-
-import javax.swing.JLabel;
+import java.awt.*;
 
 public final class UtilityClass {
+
+    public static final Color CUSTOM_BLACK = new Color(50, 41, 47);
+    public static final Color CUSTOM_ORANGE = new Color(193, 120, 23);
+    public static final Color CUSTOM_GREEN = new Color(62, 86, 34);
+    public static final Color CUSTOM_WHITE = new Color(230, 225, 197);
 
     public static Font caricaFont(int size) {
         try {
@@ -18,5 +18,5 @@ public final class UtilityClass {
             return new Font("Arial", Font.PLAIN, size);
         }
     }
-    
+
 }

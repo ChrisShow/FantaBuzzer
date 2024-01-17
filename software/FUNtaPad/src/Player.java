@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.awt.Dimension;
 import java.util.LinkedList;
 
 import javax.swing.*;
@@ -21,7 +20,7 @@ public class Player extends JPanel {
         this.name = name;
         this.credits = credits;
 
-        setBackground(new Color(50, 41, 47));
+        setBackground(UtilityClass.CUSTOM_BLACK);
 
         int distance = 10;
         int nameLabelX = distance, nameLabelY = distance;
@@ -30,7 +29,7 @@ public class Player extends JPanel {
         nameLabel = new JLabel(name);
         nameLabel.setBounds(nameLabelX, nameLabelY, nameLabelWidth, nameLabelHeight);
         nameLabel.setOpaque(true);
-        nameLabel.setBackground(new Color(193, 120, 23));
+        nameLabel.setBackground(UtilityClass.CUSTOM_ORANGE);
         nameLabel.setForeground(Color.BLACK);
         nameLabel.setFont(UtilityClass.caricaFont(38));
         nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -44,7 +43,7 @@ public class Player extends JPanel {
         amount = new JLabel("");
         amount.setBounds(nameLabelX, amountY, amountWidth, amountHeight);
         amount.setOpaque(false);
-        amount.setBackground(new Color(62, 86, 34));
+        amount.setBackground(UtilityClass.CUSTOM_GREEN);
         amount.setForeground(Color.WHITE);
         amount.setFont(UtilityClass.caricaFont(50));
         amount.setHorizontalAlignment(SwingConstants.CENTER);
@@ -58,7 +57,7 @@ public class Player extends JPanel {
         amountTextLabel = new JLabel("OFFERTA");
         amountTextLabel.setBounds(nameLabelX, amountTextLabelY, amountWidth, amountTextLabelHeight);
         amountTextLabel.setOpaque(true);
-        amountTextLabel.setBackground(new Color(62, 86, 34));
+        amountTextLabel.setBackground(UtilityClass.CUSTOM_GREEN);
         amountTextLabel.setForeground(Color.WHITE);
         amountTextLabel.setFont(UtilityClass.caricaFont(20));
         amountTextLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -71,7 +70,7 @@ public class Player extends JPanel {
         creditLabel = new JLabel("" + this.credits);
         creditLabel.setBounds(creditLabelX, amountY, amountWidth, amountHeight);
         creditLabel.setOpaque(true);
-        creditLabel.setBackground(new Color(230, 225, 197));
+        creditLabel.setBackground(UtilityClass.CUSTOM_WHITE);
         creditLabel.setForeground(Color.BLACK);
         creditLabel.setFont(UtilityClass.caricaFont(50));
         creditLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -82,7 +81,7 @@ public class Player extends JPanel {
         creditTextLabel = new JLabel("CREDITI");
         creditTextLabel.setBounds(creditLabelX, amountTextLabelY, amountWidth, amountTextLabelHeight);
         creditTextLabel.setOpaque(true);
-        creditTextLabel.setBackground(new Color(230, 225, 197));
+        creditTextLabel.setBackground(UtilityClass.CUSTOM_WHITE);
         creditTextLabel.setForeground(Color.BLACK);
         creditTextLabel.setFont(UtilityClass.caricaFont(20));
         creditTextLabel.setHorizontalAlignment(SwingConstants.CENTER);
