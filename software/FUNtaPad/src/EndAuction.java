@@ -23,9 +23,7 @@ public class EndAuction extends JFrame{
 
         this.player = player;
         this.offer = offer;
-        this.footballer = new Footballer(1,"P","Por", "Ruh","Inter",
-                50,30,20,50,30,20,
-                100,100);
+        this.footballer = footballer;
         this.board = board;
 
         // Ottieni le dimensioni dello schermo

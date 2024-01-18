@@ -75,10 +75,10 @@ public class PlayerFrame extends JFrame {
         rolePlayersLabel[2] = new JLabel("CENTROCAMPISTI");
         rolePlayersLabel[3] = new JLabel("ATTACCANTI");
         playerRoleColors = new Color[4];
-        playerRoleColors[0] = new Color(193, 120, 23);
-        playerRoleColors[1] = new Color(62, 86, 34);
-        playerRoleColors[2] = new Color(67, 124, 144);
-        playerRoleColors[3] = new Color(200, 62, 77);
+        playerRoleColors[0] = UtilityClass.CUSTOM_ORANGE;
+        playerRoleColors[1] = UtilityClass.CUSTOM_GREEN;
+        playerRoleColors[2] = UtilityClass.CUSTOM_LIGHT_BLUE;
+        playerRoleColors[3] = UtilityClass.CUSTOM_RED;
         int rolePlayerLabelWidth = playersPanelWidth - (distance * 2), rolePlayerLabelHeight = (playersPanelHeight - (distance * 9)) / 8;
         for (int i = 0; i < rolePlayersLabel.length; i++) {
             rolePlayersLabel[i].setBounds(distance, distance, rolePlayerLabelWidth, rolePlayerLabelHeight);
@@ -102,11 +102,6 @@ public class PlayerFrame extends JFrame {
         add(backgroundLabel);
 
         setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        Player samplePlayer = new Player("ChrisShow07", 500, 1, 1, 1);
-        new PlayerFrame(samplePlayer);
     }
 }
 

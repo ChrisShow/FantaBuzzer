@@ -6,6 +6,8 @@ public final class UtilityClass {
     public static final Color CUSTOM_ORANGE = new Color(193, 120, 23);
     public static final Color CUSTOM_GREEN = new Color(62, 86, 34);
     public static final Color CUSTOM_WHITE = new Color(230, 225, 197);
+    public static final Color CUSTOM_RED = new Color(200, 62, 77);
+    public static final Color CUSTOM_LIGHT_BLUE = new Color(67, 124, 144);
 
     public static Font caricaFont(int size) {
         try {
@@ -18,5 +20,4 @@ public final class UtilityClass {
             return new Font("Arial", Font.PLAIN, size);
         }
     }
-
 }

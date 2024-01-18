@@ -136,4 +136,11 @@ public class Footballer {
                 this.valueDiff + "---" + this.actualValueMantra + "---" + this.initialValueMantra + "---"
                 + this.valueDiffMantra + "---" + this.FVM + "---" + this.FVMMantra + "\n";
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(o == null) return false;
+        if(!(o instanceof Footballer)) return false;
+        return ((Footballer) o).getId() == this.getId();
+    }
 }

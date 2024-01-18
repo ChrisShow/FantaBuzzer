@@ -56,12 +56,10 @@ public class Board extends JFrame {
         int j = 0;
         for (int i = 0; i < strings.length; i++) {
             if(!strings[i].equals("null")){
-                Player p = new Player(strings[i], credits, i, playerWidth, playerHeight);
+                Player p = new Player(strings[i], credits, i, playerWidth, playerHeight, this);
                 int currentPlayerX = (distance * ((j % (teams / 2)) + 1)) + (playerWidth * (j % (teams / 2)));
                 int currentPlayerY = (playerHeight + distance) + ((distance + playerHeight) * ((int) j / (teams / 2)));
                 p.setBounds(currentPlayerX, currentPlayerY, playerWidth, playerHeight);
-                p.setLayout(null);
-                p.setBorder(BorderFactory.createLineBorder(Color.black, 3));
                 add(p);
                 p.setVisible(true);
                 players.addLast(p);
@@ -80,24 +78,20 @@ public class Board extends JFrame {
         startAuction.setVisible(true);
         add(startAuction);
 
-        int fantaTimerWidth = 200, fantaTimerHeight = 100;
+        int fantaTimerWidth = 150, fantaTimerHeight = 150;
         fantaTimer = new FantaTimer(fantaTimerWidth, fantaTimerHeight, this);
-        fantaTimer.setBounds((int)(screenWidth - fantaTimerWidth) / 2, (850), fantaTimerWidth, fantaTimerHeight);
-        //fantaTimer.setLayout(null);
+        fantaTimer.setBounds((int)(screenWidth - fantaTimerWidth) / 2, (760), fantaTimerWidth, fantaTimerHeight);
         fantaTimer.setVisible(true);
         add(fantaTimer);
 
         //Preleva i gicatori dal listone e li salva come oggetti
         initFootballers();
-
+        this.actualFootballer = footballers.removeFirst();
         setVisible(true);
         
     }
 
     public void auctionTerminated(){
-        System.out.println("Ciao");
-        this.firstStartTimer = !this.firstStartTimer;
-        this.lastOfferPlayer.setCredits(this.lastOfferPlayer.getCredits() - this.offer);
         new EndAuction(lastOfferPlayer, offer, actualFootballer, this);
     }
 
@@ -105,9 +99,25 @@ public class Board extends JFrame {
         if(!firstStartTimer){
             int i = 0;
             for (Player player : players) {
-                // TODO fare il non poter puntare se crediti minori di offerta
                 if(i == num){
-                    if(player != null && player != lastOfferPlayer){
+                    if(player != null &&
+                       player != lastOfferPlayer &&
+                       player.getCredits() >= (this.offer + 2)){
+                        switch (actualFootballer.getRole()){
+                            //TODO fare meglio sta cosa
+                            case "P":
+                                if(player.howManyGK() == 3)
+                                    break;
+                            case "D":
+                                if(player.howManyDef() == 8)
+                                    break;
+                            case "C":
+                                if(player.howManyMid() == 8)
+                                    break;
+                            case "A":
+                                if(player.howManyAtt() == 6)
+                                    break;
+                        }
                         lastOfferPlayer = player;
                         this.fantaTimer.resetTimer();
                         this.offer += 2;
@@ -128,7 +138,16 @@ public class Board extends JFrame {
     }
 
     public void resetAuction(Player player, int offer, Footballer footballer) {
-        //TODO
+        this.firstStartTimer = !this.firstStartTimer;
+        player.newFootballerBougth(footballer, offer);
+        lastOfferPlayer = null;
+        actualFootballer = footballers.removeFirst();
+        firstStartTimer = true;
+        startAuction.setEnabled(true);
+        for(Player p: players)
+            if(p != null)
+                p.cancelOffer();
+        this.offer = 0;
     }
 
     private void initFootballers(){
@@ -190,6 +209,70 @@ public class Board extends JFrame {
         }
     }
 
+    public LinkedList<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(LinkedList<Player> players) {
+        this.players = players;
+    }
+
+    public int getOffer() {
+        return offer;
+    }
+
+    public void setOffer(int offer) {
+        this.offer = offer;
+    }
+
+    public boolean isFirstStartTimer() {
+        return firstStartTimer;
+    }
+
+    public void setFirstStartTimer(boolean firstStartTimer) {
+        this.firstStartTimer = firstStartTimer;
+    }
+
+    public JButton getStartAuction() {
+        return startAuction;
+    }
+
+    public void setStartAuction(JButton startAuction) {
+        this.startAuction = startAuction;
+    }
+
+    public FantaTimer getFantaTimer() {
+        return fantaTimer;
+    }
+
+    public void setFantaTimer(FantaTimer fantaTimer) {
+        this.fantaTimer = fantaTimer;
+    }
+
+    public LinkedList<Footballer> getFootballers() {
+        return footballers;
+    }
+
+    public void setFootballers(LinkedList<Footballer> footballers) {
+        this.footballers = footballers;
+    }
+
+    public Player getLastOfferPlayer() {
+        return lastOfferPlayer;
+    }
+
+    public void setLastOfferPlayer(Player lastOfferPlayer) {
+        this.lastOfferPlayer = lastOfferPlayer;
+    }
+
+    public Footballer getActualFootballer() {
+        return actualFootballer;
+    }
+
+    public void setActualFootballer(Footballer actualFootballer) {
+        this.actualFootballer = actualFootballer;
+    }
+
     public static void main(String[] args) {
         Board board = new Board("s1-s2-s3-s4-s5-s6-null-null", 6, 500);
     }
@@ -204,7 +287,7 @@ public class Board extends JFrame {
             char keyChar = e.getKeyChar();
             if (keyChar >= '0' && keyChar <= '8') {
                 int num = Character.getNumericValue(keyChar);
-                System.out.println(num);
+//                System.out.println(num);
                 newOffer(num);
             }
         }

@@ -1,4 +1,6 @@
 import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.LinkedList;
 
 import javax.swing.*;
@@ -8,19 +10,27 @@ public class Player extends JPanel {
     private String name;
     private int credits, id;
     private LinkedList<Footballer> footballerList;
+    private LinkedList<Integer> offerList;
     private JLabel nameLabel;
     private JLabel amount;
     private JLabel creditLabel;
     private JLabel amountTextLabel;
     private JLabel creditTextLabel;
+    private Board board;
 
-    public Player(String name, int credits, int id, int width, int height){
+    public Player(String name, int credits, int id, int width, int height, Board board){
 
         this.id = id;
         this.name = name;
         this.credits = credits;
+        this.board = board;
+        this.footballerList = new LinkedList<>();
+        this.offerList = new LinkedList<>();
 
         setBackground(UtilityClass.CUSTOM_BLACK);
+        setLayout(null);
+        setBorder(BorderFactory.createLineBorder(Color.black, 3));
+        addMouseListener(new PlayerMouseListener());
 
         int distance = 10;
         int nameLabelX = distance, nameLabelY = distance;
@@ -100,6 +110,47 @@ public class Player extends JPanel {
         this.amount.setOpaque(false);
     }
 
+    public int howManyGK(){
+        int x = 0;
+        for(Footballer f: footballerList)
+            if(f != null && f.getRole().equals("P")) x++;
+        return x;
+    }
+
+    public int howManyDef(){
+        int x = 0;
+        for(Footballer f: footballerList)
+            if(f != null && f.getRole().equals("D")) x++;
+        return x;
+    }
+
+    public int howManyMid(){
+        int x = 0;
+        for(Footballer f: footballerList)
+            if(f != null && f.getRole().equals("C")) x++;
+        return x;
+    }
+
+    public int howManyAtt(){
+        int x = 0;
+        for(Footballer f: footballerList)
+            if(f != null && f.getRole().equals("A")) x++;
+        return x;
+    }
+
+    private void openPlayerFrame(){
+        if(this.board.isFirstStartTimer())
+            new PlayerFrame(this);
+    }
+
+    public void newFootballerBougth(Footballer footballer, int offer) {
+        this.getFootballerList().addLast(footballer);
+        this.getOfferList().addLast(offer);
+        this.setCredits(this.getCredits() - offer);
+        this.getCreditLabel().setText("" + this.getCredits());
+        this.repaint();
+    }
+
     @Override
     public boolean equals(Object o){
         if(o == null) return false;
@@ -177,5 +228,43 @@ public class Player extends JPanel {
 
     public void setFootballerList(LinkedList<Footballer> footballerList) {
         this.footballerList = footballerList;
+    }
+
+    public LinkedList<Integer> getOfferList() {
+        return offerList;
+    }
+
+    public void setOfferList(LinkedList<Integer> offerList) {
+        this.offerList = offerList;
+    }
+
+
+
+    private class PlayerMouseListener implements MouseListener{
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            openPlayerFrame();
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            setBackground(Color.GRAY);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            setBackground(UtilityClass.CUSTOM_BLACK);
+        }
     }
 }
