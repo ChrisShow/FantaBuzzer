@@ -96,33 +96,14 @@ public class Board extends JFrame {
     }
 
     private void newOffer(int num){
-        if(!firstStartTimer){
+        if(!firstStartTimer && validOffer(num)){
             int i = 0;
             for (Player player : players) {
                 if(i == num){
-                    if(player != null &&
-                       player != lastOfferPlayer &&
-                       player.getCredits() >= (this.offer + 2)){
-                        switch (actualFootballer.getRole()){
-                            //TODO fare meglio sta cosa
-                            case "P":
-                                if(player.howManyGK() == 3)
-                                    break;
-                            case "D":
-                                if(player.howManyDef() == 8)
-                                    break;
-                            case "C":
-                                if(player.howManyMid() == 8)
-                                    break;
-                            case "A":
-                                if(player.howManyAtt() == 6)
-                                    break;
-                        }
-                        lastOfferPlayer = player;
-                        this.fantaTimer.resetTimer();
-                        this.offer += 2;
-                        player.newOffer(this.offer);
-                    }
+                    lastOfferPlayer = player;
+                    this.fantaTimer.resetTimer();
+                    this.offer += 2;
+                    player.newOffer(this.offer);
                 }
                 else {
                     if(players.get(num) != null)
@@ -130,11 +111,17 @@ public class Board extends JFrame {
                             player.cancelOffer();
                 }
                 i++;
-                if(player != null)
-                    player.repaint();
             }
-            repaint();
         }
+    }
+
+    private boolean validOffer(int num) {
+        if(players.get(num) == null || players.get(num) == lastOfferPlayer || players.get(num).getCredits() < (this.offer+2)) return false;
+        if(actualFootballer.isGoalkeeper() && players.get(num).howManyGK() > 2) return false;
+        else if (actualFootballer.isDefender() && players.get(num).howManyDef() > 7) return false;
+        else if (actualFootballer.isMidfielder() && players.get(num).howManyMid() > 7) return false;
+        else if(actualFootballer.isAttacker() && players.get(num).howManyAtt() > 5) return false;
+        return true;
     }
 
     public void resetAuction(Player player, int offer, Footballer footballer) {
@@ -285,7 +272,7 @@ public class Board extends JFrame {
         @Override
         public void keyPressed(KeyEvent e) {
             char keyChar = e.getKeyChar();
-            if (keyChar >= '0' && keyChar <= '8') {
+            if (keyChar >= '0' && keyChar < '8') {
                 int num = Character.getNumericValue(keyChar);
 //                System.out.println(num);
                 newOffer(num);

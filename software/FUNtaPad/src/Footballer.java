@@ -25,6 +25,22 @@ public class Footballer {
 
     }
 
+    public boolean isGoalkeeper(){
+        return this.role.equals("P");
+    }
+
+    public boolean isDefender(){
+        return this.role.equals("D");
+    }
+
+    public boolean isMidfielder(){
+        return this.role.equals("M");
+    }
+
+    public boolean isAttacker(){
+        return this.role.equals("A");
+    }
+
     public double getId() {
         return id;
     }
