@@ -7,6 +7,7 @@ public class PlayerFrame extends JFrame {
     private JPanel[] playersPanel;
     private JLabel[] rolePlayersLabel;
     private Color[] playerRoleColors;
+    private JLabel[] footballerLabels;
 
     public PlayerFrame(Player player) {
 
@@ -91,6 +92,42 @@ public class PlayerFrame extends JFrame {
             rolePlayersLabel[i].setForeground(Color.black);
             rolePlayersLabel[i].setVisible(true);
             playersPanel[i].add(rolePlayersLabel[i]);
+        }
+
+        //Impostazione JLabel con nomi giocatori acquistati
+        footballerLabels = new JLabel[25];
+        int cGK = 0, cDef = 0, cMid = 0, cAtt = 0;
+        int c = 0;
+        for(Footballer footballer : this.player.getFootballerList()){
+            footballerLabels[c] = new JLabel(footballer.getSurname() + " - " + player.getOfferList().get(c));
+            int offset;
+            if(footballer.isGoalkeeper()){
+                offset = 0;
+                cGK++;
+            }
+            else if(footballer.isDefender()){
+                offset = 1;
+                cDef++;
+            }
+            else if(footballer.isMidfielder()){
+                offset = 2;
+                cMid++;
+            }
+            else {
+                offset = 3;
+                cAtt++;
+            }
+            //TODO
+            footballerLabels[c].setBounds(distance, distance, rolePlayerLabelWidth, rolePlayerLabelHeight);
+            footballerLabels[i].setFont(UtilityClass.caricaFont(20));
+            footballerLabels[i].setHorizontalAlignment(SwingConstants.CENTER);
+            footballerLabels[i].setVerticalAlignment(SwingConstants.CENTER);
+            footballerLabels[i].setBorder(BorderFactory.createLineBorder(Color.black, 3));
+            footballerLabels[i].setOpaque(true);
+            footballerLabels[i].setBackground(playerRoleColors[i]);
+            footballerLabels[i].setForeground(Color.black);
+            footballerLabels[i].setVisible(true);
+            playersPanel[i].add(footballerLabels[c]);
         }
 
         // Imposta l'immagine di sfondo utilizzando un JLabel
