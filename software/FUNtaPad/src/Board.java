@@ -9,9 +9,7 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.LinkedList;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class Board extends JFrame {
 
@@ -23,6 +21,7 @@ public class Board extends JFrame {
     private LinkedList<Footballer> footballers;
     private Player lastOfferPlayer;
     private Footballer actualFootballer;
+    private JPanel controlPanel, playersPanel, timerPanel;
 
     public Board(String stringTeams, int teams, int credits) {
 
@@ -48,8 +47,38 @@ public class Board extends JFrame {
         //setBounds(0, 0, screenWidth, screenHeight);
 
         int distance = 10;
-        int playerWidth = (int) ((screenWidth - (distance * ((teams / 2) + 1))) / (teams / 2));
-        int playerHeight = (int) ((screenHeight - distance) / 4);
+
+        // Disposizione JPanels
+        int controlPanelWidth = (int) screenWidth - distance * 2;
+        int controlPanelHeight = (int) ((screenHeight - distance * 4) / 9) * 2;
+        controlPanel = new JPanel(null);
+        controlPanel.setBounds(distance, distance, controlPanelWidth, controlPanelHeight);
+        controlPanel.setOpaque(false);
+
+        int playersPanelHeight = (int) ((screenHeight - distance * 4) / 9) * 5;
+        playersPanel = new JPanel(null);
+        playersPanel.setBounds(distance, (distance * 2) + controlPanelHeight, controlPanelWidth, playersPanelHeight);
+        playersPanel.setOpaque(false);
+
+        int timerPanelHeight = (int) (screenHeight - ((distance * 6.5) + controlPanelHeight + playersPanelHeight));
+        timerPanel = new JPanel(null);
+        timerPanel.setBounds(distance, (distance * 3) + controlPanelHeight + playersPanelHeight, controlPanelWidth, timerPanelHeight);
+        timerPanel.setOpaque(false);
+
+        // Posizionamento bottone inizio asta
+        int startAuctionWidth = 200, startAuctionHeight = 100;
+        int startAuctionX = (int) (controlPanelWidth - startAuctionWidth) / 2;
+        int startAuctionY = (int) (controlPanelHeight - startAuctionHeight) / 2;
+        startAuction = new JButton("Inizia Asta");
+        startAuction.setFont(UtilityClass.caricaFont(25));
+        startAuction.addActionListener(new BoardListener());
+        startAuction.setFocusable(false);
+        startAuction.setBounds(startAuctionX, startAuctionY, startAuctionWidth, startAuctionHeight);
+        startAuction.setVisible(true);
+        controlPanel.add(startAuction);
+
+        int playerWidth = (int) ((controlPanelWidth - (distance * ((teams / 2) + 1))) / (teams / 2));
+        int playerHeight = (int) ((playersPanelHeight - (distance * 3)) / 2);
 
         players = new LinkedList<>();
         String[] strings = stringTeams.split("-");
@@ -58,9 +87,9 @@ public class Board extends JFrame {
             if(!strings[i].equals("null")){
                 Player p = new Player(strings[i], credits, i, playerWidth, playerHeight, this);
                 int currentPlayerX = (distance * ((j % (teams / 2)) + 1)) + (playerWidth * (j % (teams / 2)));
-                int currentPlayerY = (playerHeight + distance) + ((distance + playerHeight) * ((int) j / (teams / 2)));
+                int currentPlayerY = distance + ((distance + playerHeight) * ((int) j / (teams / 2)));
                 p.setBounds(currentPlayerX, currentPlayerY, playerWidth, playerHeight);
-                add(p);
+                playersPanel.add(p);
                 p.setVisible(true);
                 players.addLast(p);
                 j++;
@@ -69,24 +98,24 @@ public class Board extends JFrame {
                 players.addLast(null);
         }
 
-        int startAuctionWidth = 200, startAuctionHeight = 100;
-        startAuction = new JButton("Inizia Asta");
-        startAuction.setFont(UtilityClass.caricaFont(25));
-        startAuction.addActionListener(new BoardListener());
-        startAuction.setFocusable(false);
-        startAuction.setBounds((int)(screenWidth - startAuctionWidth) / 2, (distance * 5), startAuctionWidth, startAuctionHeight);
-        startAuction.setVisible(true);
-        add(startAuction);
-
-        int fantaTimerWidth = 150, fantaTimerHeight = 150;
+        int fantaTimerWidth = (int) (timerPanelHeight - distance * 2);
+        int fantaTimerHeight = fantaTimerWidth;
         fantaTimer = new FantaTimer(fantaTimerWidth, fantaTimerHeight, this);
-        fantaTimer.setBounds((int)(screenWidth - fantaTimerWidth) / 2, (760), fantaTimerWidth, fantaTimerHeight);
+        fantaTimer.setBounds((int)(controlPanelWidth - fantaTimerWidth) / 2, (timerPanelHeight - fantaTimerHeight) / 2, fantaTimerWidth, fantaTimerHeight);
         fantaTimer.setVisible(true);
-        add(fantaTimer);
+        timerPanel.add(fantaTimer);
 
         //Preleva i gicatori dal listone e li salva come oggetti
         initFootballers();
         this.actualFootballer = footballers.removeFirst();
+
+        // setVisible di tutti i panel e frame
+        controlPanel.setVisible(true);
+        playersPanel.setVisible(true);
+        timerPanel.setVisible(true);
+        add(controlPanel);
+        add(playersPanel);
+        add(timerPanel);
         setVisible(true);
         
     }

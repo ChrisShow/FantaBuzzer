@@ -13,7 +13,7 @@ public class PlayerFrame extends JFrame {
 
         this.player = player;
 
-        int width = 900, height = 600, distance = 10;
+        int width = 1000, height = 650, distance = 10;
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimensioneSchermo = toolkit.getScreenSize();
@@ -99,35 +99,39 @@ public class PlayerFrame extends JFrame {
         int cGK = 0, cDef = 0, cMid = 0, cAtt = 0;
         int c = 0;
         for(Footballer footballer : this.player.getFootballerList()){
-            footballerLabels[c] = new JLabel(footballer.getSurname() + " - " + player.getOfferList().get(c));
-            int offset;
+            int roleNum, roleCont;
             if(footballer.isGoalkeeper()){
-                offset = 0;
+                roleNum = 0;
                 cGK++;
+                roleCont = cGK;
             }
             else if(footballer.isDefender()){
-                offset = 1;
+                roleNum = 1;
                 cDef++;
+                roleCont = cDef;
             }
             else if(footballer.isMidfielder()){
-                offset = 2;
+                roleNum = 2;
                 cMid++;
+                roleCont = cMid;
             }
             else {
-                offset = 3;
+                roleNum = 3;
                 cAtt++;
+                roleCont = cAtt;
             }
-            //TODO
-            footballerLabels[c].setBounds(distance, distance, rolePlayerLabelWidth, rolePlayerLabelHeight);
-            footballerLabels[i].setFont(UtilityClass.caricaFont(20));
-            footballerLabels[i].setHorizontalAlignment(SwingConstants.CENTER);
-            footballerLabels[i].setVerticalAlignment(SwingConstants.CENTER);
-            footballerLabels[i].setBorder(BorderFactory.createLineBorder(Color.black, 3));
-            footballerLabels[i].setOpaque(true);
-            footballerLabels[i].setBackground(playerRoleColors[i]);
-            footballerLabels[i].setForeground(Color.black);
-            footballerLabels[i].setVisible(true);
-            playersPanel[i].add(footballerLabels[c]);
+            footballerLabels[c] = new JLabel(footballer.getSurname() + " - " + player.getOfferList().get(c));
+            footballerLabels[c].setBounds(distance, (distance * (roleCont + 1)) + (rolePlayerLabelHeight * (roleCont)), rolePlayerLabelWidth, rolePlayerLabelHeight);
+            footballerLabels[c].setFont(UtilityClass.caricaFont(20));
+            footballerLabels[c].setHorizontalAlignment(SwingConstants.CENTER);
+            footballerLabels[c].setVerticalAlignment(SwingConstants.CENTER);
+            footballerLabels[c].setBorder(BorderFactory.createLineBorder(Color.black, 3));
+            footballerLabels[c].setOpaque(true);
+            footballerLabels[c].setBackground(UtilityClass.CUSTOM_WHITE);
+            footballerLabels[c].setForeground(Color.black);
+            footballerLabels[c].setVisible(true);
+            playersPanel[roleNum].add(footballerLabels[c]);
+            c++;
         }
 
         // Imposta l'immagine di sfondo utilizzando un JLabel
