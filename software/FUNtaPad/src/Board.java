@@ -103,9 +103,10 @@ public class Board extends JFrame {
         startAuction.setFocusable(false);
         startAuction.setBounds(startAuctionX, distance + distance / 2, footballerTextLabelWidth, footballerTextLabelHeight);
         startAuction.setVisible(true);
+        startAuction.setEnabled(false);
         controlPanel.add(startAuction);
 
-        // Posizionamento bottone inizio asta
+        // Posizionamento bottone nuova asta
         int newAuctionX = distance * 4 + footballerTextLabelWidth * 2 + footballerLabelWidth;
         newAuction = new JButton("Nuova Asta");
         newAuction.setFont(UtilityClass.caricaFont(25));
@@ -361,6 +362,9 @@ public class Board extends JFrame {
                     firstStartTimer = false;
                     startAuction.setEnabled(false);
                 }
+            }
+            if(e.getSource() == newAuction){
+                new SearchingFootballerFrame(footballers);
             }
         }
         

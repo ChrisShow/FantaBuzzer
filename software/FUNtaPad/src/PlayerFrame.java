@@ -22,9 +22,10 @@ public class PlayerFrame extends JFrame {
 
         // Impostazioni JFrame
         setTitle("Informazioni Player");
-        setSize(800, 800);
+        setSize(width, height);
         setBounds((screenWidth - width) / 2, (screenHeight - height) / 2, width, height);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setResizable(false);
         setLayout(null);
 
         //Impostazione Label del nome squadra
@@ -59,7 +60,7 @@ public class PlayerFrame extends JFrame {
         int playersPanelWidth = (width - (distance * 6)) / 4;
         int playersPanelHeight = height - (distance * 10 + nameLabelHeight + creditsLabelHeight);
         int playersPanelY = distance * 5 + nameLabelHeight + creditsLabelHeight;
-        playersPanel = new JPanel[5];
+        playersPanel = new JPanel[4];
         for (int i=0; i<playersPanel.length; i++){
             playersPanel[i] = new JPanel(null);
             playersPanel[i].setBorder(BorderFactory.createLineBorder(Color.black, 3));
