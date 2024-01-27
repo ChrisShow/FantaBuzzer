@@ -16,12 +16,13 @@ public class Board extends JFrame {
     private LinkedList<Player> players;
     private int offer;
     private boolean firstStartTimer;
-    private JButton startAuction;
+    private JButton newAuction, startAuction;
     private FantaTimer fantaTimer;
     private LinkedList<Footballer> footballers;
     private Player lastOfferPlayer;
     private Footballer actualFootballer;
     private JPanel controlPanel, playersPanel, timerPanel;
+    private JLabel footballerTextLabel, footballerLabel;
 
     public Board(String stringTeams, int teams, int credits) {
 
@@ -50,12 +51,12 @@ public class Board extends JFrame {
 
         // Disposizione JPanels
         int controlPanelWidth = (int) screenWidth - distance * 2;
-        int controlPanelHeight = (int) ((screenHeight - distance * 4) / 9) * 2;
+        int controlPanelHeight = (int) ((screenHeight - distance * 4) / 9);
         controlPanel = new JPanel(null);
         controlPanel.setBounds(distance, distance, controlPanelWidth, controlPanelHeight);
         controlPanel.setOpaque(false);
 
-        int playersPanelHeight = (int) ((screenHeight - distance * 4) / 9) * 5;
+        int playersPanelHeight = (int) ((screenHeight - distance * 4) / 9) * 6;
         playersPanel = new JPanel(null);
         playersPanel.setBounds(distance, (distance * 2) + controlPanelHeight, controlPanelWidth, playersPanelHeight);
         playersPanel.setOpaque(false);
@@ -65,17 +66,54 @@ public class Board extends JFrame {
         timerPanel.setBounds(distance, (distance * 3) + controlPanelHeight + playersPanelHeight, controlPanelWidth, timerPanelHeight);
         timerPanel.setOpaque(false);
 
+        // Posizionamento Label scritta giocatore in asta
+        int footballerTextLabelWidth = (int) (controlPanelWidth - distance * 5) / 7;
+        int footballerTextLabelHeight = controlPanelHeight - distance - distance / 2;
+        footballerTextLabel = new JLabel("Giocatore in asta:");
+        footballerTextLabel.setFont(UtilityClass.caricaFont(25));
+        footballerTextLabel.setBounds(distance, (distance + distance / 2), footballerTextLabelWidth, footballerTextLabelHeight);
+        footballerTextLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        footballerTextLabel.setVerticalAlignment(SwingConstants.CENTER);
+        footballerTextLabel.setOpaque(true);
+        footballerTextLabel.setBackground(UtilityClass.CUSTOM_BLACK);
+        footballerTextLabel.setForeground(Color.white);
+        footballerTextLabel.setBorder(BorderFactory.createLineBorder(Color.black, 3));
+        footballerTextLabel.setVisible(true);
+        controlPanel.add(footballerTextLabel);
+
+        // Posizionamento Label giocatore in asta
+        int footballerLabelWidth = (int) ((controlPanelWidth - distance * 5) / 7) * 4;
+        footballerLabel = new JLabel();
+        footballerLabel.setFont(UtilityClass.caricaFont(25));
+        footballerLabel.setBounds(distance * 2 + footballerTextLabelWidth, (distance + distance / 2), footballerLabelWidth, footballerTextLabelHeight);
+        footballerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        footballerLabel.setVerticalAlignment(SwingConstants.CENTER);
+        footballerLabel.setOpaque(true);
+        footballerLabel.setBackground(UtilityClass.CUSTOM_WHITE);
+        footballerLabel.setForeground(Color.black);
+        footballerLabel.setBorder(BorderFactory.createLineBorder(Color.black, 3));
+        footballerLabel.setVisible(true);
+        controlPanel.add(footballerLabel);
+
         // Posizionamento bottone inizio asta
-        int startAuctionWidth = 200, startAuctionHeight = 100;
-        int startAuctionX = (int) (controlPanelWidth - startAuctionWidth) / 2;
-        int startAuctionY = (int) (controlPanelHeight - startAuctionHeight) / 2;
+        int startAuctionX = distance * 3 + footballerTextLabelWidth + footballerLabelWidth;
         startAuction = new JButton("Inizia Asta");
         startAuction.setFont(UtilityClass.caricaFont(25));
         startAuction.addActionListener(new BoardListener());
         startAuction.setFocusable(false);
-        startAuction.setBounds(startAuctionX, startAuctionY, startAuctionWidth, startAuctionHeight);
+        startAuction.setBounds(startAuctionX, distance + distance / 2, footballerTextLabelWidth, footballerTextLabelHeight);
         startAuction.setVisible(true);
         controlPanel.add(startAuction);
+
+        // Posizionamento bottone inizio asta
+        int newAuctionX = distance * 4 + footballerTextLabelWidth * 2 + footballerLabelWidth;
+        newAuction = new JButton("Nuova Asta");
+        newAuction.setFont(UtilityClass.caricaFont(25));
+        newAuction.addActionListener(new BoardListener());
+        newAuction.setFocusable(false);
+        newAuction.setBounds(newAuctionX, distance + distance / 2, footballerTextLabelWidth, footballerTextLabelHeight);
+        newAuction.setVisible(true);
+        controlPanel.add(newAuction);
 
         int playerWidth = (int) ((controlPanelWidth - (distance * ((teams / 2) + 1))) / (teams / 2));
         int playerHeight = (int) ((playersPanelHeight - (distance * 3)) / 2);
