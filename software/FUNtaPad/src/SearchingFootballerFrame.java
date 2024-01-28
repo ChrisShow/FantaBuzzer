@@ -8,20 +8,24 @@ public class SearchingFootballerFrame extends JFrame {
 
     private LinkedList<Footballer> footballers;
     private JLabel titleLabel, footballerSurnameTextLabel, footballerTeamTextLabel;
+    //TODO ID
+    private JLabel footballerIDTextLabel, footballerInitialCreditsTextLabel, footballerActualCreditsTextLabel;
     private JTextField search;
     private JPanel footballerSearchedPanel;
-    private JScrollPane slider;
+    private JScrollPane verticalSlider;
+    private Board board;
 
     public SearchingFootballerFrame(LinkedList<Footballer> footballers){
 
         this.footballers = footballers;
 
-        int width = 600, height = 650, distance = 10;
+        int width = 1000, height = 650, distance = 10;
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimensioneSchermo = toolkit.getScreenSize();
         int screenWidth = dimensioneSchermo.width;
         int screenHeight = dimensioneSchermo.height;
+        int fullWidthWithoutDistances =  (width - distance * 4);
 
         // Impostazioni JFrame
         setTitle("Cerca giocatore");
@@ -32,10 +36,10 @@ public class SearchingFootballerFrame extends JFrame {
 
         //Impostazione Label titolo
         int titleLabelHeight = (height - distance * 9) / 7;
-        int titleLabelWidth =  (width - distance * 4);
+        int titleLabelWidth = (width - distance * 4) / 2;
         titleLabel = new JLabel("Cerca un giocatore");
         titleLabel.setFont(UtilityClass.caricaFont(40));
-        titleLabel.setBounds(distance, distance * 2, titleLabelWidth, titleLabelHeight);
+        titleLabel.setBounds((width - titleLabelWidth) / 2, distance * 2, titleLabelWidth, titleLabelHeight);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setVerticalAlignment(SwingConstants.CENTER);
         titleLabel.setOpaque(true);
@@ -48,16 +52,17 @@ public class SearchingFootballerFrame extends JFrame {
         //Impostazione TextField ricerca giocatore
         search = new JTextField();
         search.setFont(UtilityClass.caricaFont(40));
-        search.setBounds(distance, distance * 4 + titleLabelHeight, titleLabelWidth, titleLabelHeight);
+        search.setBounds(distance, distance * 4 + titleLabelHeight, fullWidthWithoutDistances, titleLabelHeight);
         search.setHorizontalAlignment(SwingConstants.CENTER);
         search.setForeground(Color.black);
         search.setBorder(BorderFactory.createLineBorder(Color.black, 3));
+        search.addKeyListener(new SearchingFootballerFrameKeyboardListener());
         search.setVisible(true);
         add(search);
 
         //Impostazione Label testo giocatore
         int footballerSurnameTextLabelHeight = (height - distance * 9) / (7 * 2);
-        int footballerSurnameTextLabelWidth =  (((width - distance * 5) / 3) * 2) - distance * 3;
+        int footballerSurnameTextLabelWidth =  (((width - distance * 5) / 5) * 2) - distance * 2;
         int footballerSurnameTextLabelY =  distance * 6 + titleLabelHeight * 2;
         footballerSurnameTextLabel = new JLabel("GIOCATORE");
         footballerSurnameTextLabel.setFont(UtilityClass.caricaFont(20));
@@ -67,13 +72,13 @@ public class SearchingFootballerFrame extends JFrame {
         footballerSurnameTextLabel.setOpaque(true);
         footballerSurnameTextLabel.setBackground(Color.LIGHT_GRAY);
         footballerSurnameTextLabel.setForeground(Color.black);
-        footballerSurnameTextLabel.setBorder(BorderFactory.createLineBorder(Color.black, 3));
+        footballerSurnameTextLabel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
         footballerSurnameTextLabel.setVisible(true);
         add(footballerSurnameTextLabel);
 
         //Impostazione Label testo squadra giocatore
-        int footballerTeamTextLabelWidth =  ((width - distance * 5) / 3) - distance;
-        int footballerTeamTextLabelX =  distance * 3 + footballerSurnameTextLabelWidth;
+        int footballerTeamTextLabelWidth =  ((width - distance * 5) / 5);
+        int footballerTeamTextLabelX =  distance * 2 + footballerSurnameTextLabelWidth;
         footballerTeamTextLabel = new JLabel("SQUADRA");
         footballerTeamTextLabel.setFont(UtilityClass.caricaFont(20));
         footballerTeamTextLabel.setBounds(footballerTeamTextLabelX, footballerSurnameTextLabelY, footballerTeamTextLabelWidth, footballerSurnameTextLabelHeight);
@@ -82,14 +87,29 @@ public class SearchingFootballerFrame extends JFrame {
         footballerTeamTextLabel.setOpaque(true);
         footballerTeamTextLabel.setBackground(Color.LIGHT_GRAY);
         footballerTeamTextLabel.setForeground(Color.black);
-        footballerTeamTextLabel.setBorder(BorderFactory.createLineBorder(Color.black, 3));
+        footballerTeamTextLabel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+        footballerTeamTextLabel.setVisible(true);
+        add(footballerTeamTextLabel);
+
+        //Impostazione Label testo squadra giocatore
+        int footballerTeamTextLabelWidth =  ((width - distance * 5) / 3);
+        int footballerTeamTextLabelX =  distance * 2 + footballerSurnameTextLabelWidth;
+        footballerTeamTextLabel = new JLabel("SQUADRA");
+        footballerTeamTextLabel.setFont(UtilityClass.caricaFont(20));
+        footballerTeamTextLabel.setBounds(footballerTeamTextLabelX, footballerSurnameTextLabelY, footballerTeamTextLabelWidth, footballerSurnameTextLabelHeight);
+        footballerTeamTextLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        footballerTeamTextLabel.setVerticalAlignment(SwingConstants.CENTER);
+        footballerTeamTextLabel.setOpaque(true);
+        footballerTeamTextLabel.setBackground(Color.LIGHT_GRAY);
+        footballerTeamTextLabel.setForeground(Color.black);
+        footballerTeamTextLabel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
         footballerTeamTextLabel.setVisible(true);
         add(footballerTeamTextLabel);
 
         // Impostazione panel giocatori cercati
         int footballerSearchedPanelY = distance * 7 + titleLabelHeight * 2 + footballerSurnameTextLabelHeight;
         int footballerSearchedPanelHeight = height - footballerSearchedPanelY - distance * 6;
-        int footballerSearchedPanelWidth = titleLabelWidth - distance * 4;
+        int footballerSearchedPanelWidth = fullWidthWithoutDistances;
         footballerSearchedPanel = new JPanel(null);
         footballerSearchedPanel.setBorder(BorderFactory.createLineBorder(Color.black, 3));
         footballerSearchedPanel.setLocation(distance, footballerSearchedPanelY);
@@ -98,22 +118,24 @@ public class SearchingFootballerFrame extends JFrame {
         add(footballerSearchedPanel);
 
         // Impostazione slider
-        int sliderWidth = distance * 2;
-        slider = new JScrollPane(footballerSearchedPanel);
-        slider.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        slider.setBounds((distance * 3 + footballerSearchedPanelWidth), footballerSearchedPanelY, sliderWidth, footballerSearchedPanelHeight);
-        slider.setVisible(true);
-        add(slider);
+        verticalSlider = new JScrollPane(footballerSearchedPanel);
+        verticalSlider.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        verticalSlider.setBounds(distance, footballerSearchedPanelY, footballerSearchedPanelWidth, footballerSearchedPanelHeight);
+        verticalSlider.setVisible(true);
+        add(verticalSlider);
 
         setVisible(true);
     }
 
     private void updateFootballerSearchedPanel(){
+        System.out.println("Suka");
         for(Component c : footballerSearchedPanel.getComponents()){
             footballerSearchedPanel.remove(c);
         }
         for(Footballer f: footballers){
-            //TODO
+            if(f.getSurname().contains(search.getText())){
+                JLabel label = new JLabel("");
+            }
         }
     }
 
