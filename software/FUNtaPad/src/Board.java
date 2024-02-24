@@ -84,7 +84,7 @@ public class Board extends JFrame {
         // Posizionamento Label giocatore in asta
         int footballerLabelWidth = (int) ((controlPanelWidth - distance * 5) / 7) * 4;
         footballerLabel = new JLabel();
-        footballerLabel.setFont(UtilityClass.caricaFont(25));
+        footballerLabel.setFont(UtilityClass.caricaFont(50));
         footballerLabel.setBounds(distance * 2 + footballerTextLabelWidth, (distance + distance / 2), footballerLabelWidth, footballerTextLabelHeight);
         footballerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         footballerLabel.setVerticalAlignment(SwingConstants.CENTER);
@@ -99,7 +99,7 @@ public class Board extends JFrame {
         int startAuctionX = distance * 3 + footballerTextLabelWidth + footballerLabelWidth;
         startAuction = new JButton("Inizia Asta");
         startAuction.setFont(UtilityClass.caricaFont(25));
-        startAuction.addActionListener(new BoardListener());
+        startAuction.addActionListener(new BoardListener(this));
         startAuction.setFocusable(false);
         startAuction.setBounds(startAuctionX, distance + distance / 2, footballerTextLabelWidth, footballerTextLabelHeight);
         startAuction.setVisible(true);
@@ -110,7 +110,7 @@ public class Board extends JFrame {
         int newAuctionX = distance * 4 + footballerTextLabelWidth * 2 + footballerLabelWidth;
         newAuction = new JButton("Nuova Asta");
         newAuction.setFont(UtilityClass.caricaFont(25));
-        newAuction.addActionListener(new BoardListener());
+        newAuction.addActionListener(new BoardListener(this));
         newAuction.setFocusable(false);
         newAuction.setBounds(newAuctionX, distance + distance / 2, footballerTextLabelWidth, footballerTextLabelHeight);
         newAuction.setVisible(true);
@@ -196,9 +196,12 @@ public class Board extends JFrame {
         this.firstStartTimer = !this.firstStartTimer;
         player.newFootballerBougth(footballer, offer);
         lastOfferPlayer = null;
-        actualFootballer = footballers.removeFirst();
+        footballers.remove(actualFootballer);
+        actualFootballer = null;
+        footballerLabel.setText("");
         firstStartTimer = true;
-        startAuction.setEnabled(true);
+        startAuction.setEnabled(false);
+        newAuction.setEnabled(true);
         for(Player p: players)
             if(p != null)
                 p.cancelOffer();
@@ -262,6 +265,12 @@ public class Board extends JFrame {
         } catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void addFootballerToAuction(Footballer f){
+        this.actualFootballer = f;
+        this.footballerLabel.setText(f.getSurname());
+        this.startAuction.setEnabled(true);
     }
 
     public LinkedList<Player> getPlayers() {
@@ -342,7 +351,6 @@ public class Board extends JFrame {
             char keyChar = e.getKeyChar();
             if (keyChar >= '0' && keyChar < '8') {
                 int num = Character.getNumericValue(keyChar);
-//                System.out.println(num);
                 newOffer(num);
             }
         }
@@ -354,6 +362,12 @@ public class Board extends JFrame {
 
     private class BoardListener implements ActionListener{
 
+        Board b;
+
+        public BoardListener(Board board) {
+            b = board;
+        }
+
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == startAuction){
@@ -361,10 +375,11 @@ public class Board extends JFrame {
                     fantaTimer.resetTimer();
                     firstStartTimer = false;
                     startAuction.setEnabled(false);
+                    newAuction.setEnabled(false);
                 }
             }
             if(e.getSource() == newAuction){
-                new SearchingFootballerFrame(footballers);
+                new SearchingFootballerFrame(footballers, b);
             }
         }
         

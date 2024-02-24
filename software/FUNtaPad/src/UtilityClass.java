@@ -15,6 +15,8 @@ public final class UtilityClass {
     public static final Color CUSTOM_WHITE = new Color(230, 225, 197);
     public static final Color CUSTOM_RED = new Color(200, 62, 77);
     public static final Color CUSTOM_LIGHT_BLUE = new Color(67, 124, 144);
+    public static final Color CUSTOM_LIGHT_CYAN = new Color(140,251,222);
+    public static final Color CUSTOM_BLUE = new Color(2,128,144);
 
     public static Font caricaFont(int size) {
         try {
