@@ -83,4 +83,48 @@ public class FantaTimer extends JPanel implements Runnable{
 
     @Override
     public void run() {}
+
+    public JLabel getTimer() {
+        return timer;
+    }
+
+    public void setTimer(JLabel timer) {
+        this.timer = timer;
+    }
+
+    public int getSecondi() {
+        return secondi;
+    }
+
+    public void setSecondi(int secondi) {
+        this.secondi = secondi;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public Timer getTimerInstance() {
+        return timerInstance;
+    }
+
+    public void setTimerInstance(Timer timerInstance) {
+        this.timerInstance = timerInstance;
+    }
+
+    public Color getInitialBackgroundColor() {
+        return initialBackgroundColor;
+    }
+
+    public Color getTargetBackgroundColor() {
+        return targetBackgroundColor;
+    }
+
+    public Color getIntermediateBackgroundColor() {
+        return intermediateBackgroundColor;
+    }
 }

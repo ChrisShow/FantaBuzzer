@@ -16,7 +16,7 @@ public class Board extends JFrame {
     private LinkedList<Player> players;
     private int offer;
     private boolean firstStartTimer;
-    private JButton newAuction, startAuction;
+    private JButton newAuction, startAuction, skipTime;
     private FantaTimer fantaTimer;
     private LinkedList<Footballer> footballers;
     private Player lastOfferPlayer;
@@ -144,6 +144,16 @@ public class Board extends JFrame {
         fantaTimer.setVisible(true);
         timerPanel.add(fantaTimer);
 
+        int skipTimeWidth = fantaTimerWidth, skipTimeHeight = fantaTimerHeight / 2;
+        skipTime = new JButton("Skip »");
+        skipTime.setFont(UtilityClass.caricaFont(25));
+        skipTime.addActionListener(new BoardListener(this));
+        skipTime.setFocusable(false);
+        skipTime.setBounds(controlPanelWidth - fantaTimerWidth - distance, (timerPanelHeight - skipTimeHeight) / 2, skipTimeWidth, skipTimeHeight);
+        skipTime.setVisible(true);
+        skipTime.setEnabled(false);
+        timerPanel.add(skipTime);
+
         //Preleva i gicatori dal listone e li salva come oggetti
         initFootballers();
         this.actualFootballer = footballers.removeFirst();
@@ -194,13 +204,16 @@ public class Board extends JFrame {
 
     public void resetAuction(Player player, int offer, Footballer footballer) {
         this.firstStartTimer = !this.firstStartTimer;
-        player.newFootballerBougth(footballer, offer);
+        if(player != null){
+            player.newFootballerBougth(footballer, offer);
+            footballers.remove(actualFootballer);
+        }
         lastOfferPlayer = null;
-        footballers.remove(actualFootballer);
         actualFootballer = null;
         footballerLabel.setText("");
         firstStartTimer = true;
         startAuction.setEnabled(false);
+        skipTime.setEnabled(false);
         newAuction.setEnabled(true);
         for(Player p: players)
             if(p != null)
@@ -375,11 +388,17 @@ public class Board extends JFrame {
                     fantaTimer.resetTimer();
                     firstStartTimer = false;
                     startAuction.setEnabled(false);
+                    skipTime.setEnabled(true);
                     newAuction.setEnabled(false);
                 }
             }
             if(e.getSource() == newAuction){
                 new SearchingFootballerFrame(footballers, b);
+            }
+            if(e.getSource() == skipTime){
+                //fantaTimer.resetTimer();
+                //new EndAuction(lastOfferPlayer, offer, actualFootballer, b);
+                fantaTimer.setSecondi(1);
             }
         }
         

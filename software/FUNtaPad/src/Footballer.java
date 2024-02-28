@@ -34,7 +34,7 @@ public class Footballer {
     }
 
     public boolean isMidfielder(){
-        return this.role.equals("M");
+        return this.role.equals("C");
     }
 
     public boolean isAttacker(){

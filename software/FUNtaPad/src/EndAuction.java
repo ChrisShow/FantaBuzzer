@@ -38,19 +38,34 @@ public class EndAuction extends JFrame{
         // Impostare la finestra principale
         setBounds((int)(screenWidth - width) / 2, (int)(screenHeight - height) / 2, width, height);
         setResizable(false);
-        setTitle("Asta vinta da " + this.player.getName());
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(null);
 
-        // Caricare l'immagine GIF come sfondo animato
-        ImageIcon backgroundIcon = new ImageIcon("software\\FUNtaPad\\resources\\images\\animated_background.gif");
-        backgroundLabel = new JLabel(backgroundIcon);
-        backgroundLabel.setBounds(0, 0, width, height);
+        String titolo, s = "";
+        ImageIcon backgroundIcon;
+        if(player == null){
+            titolo = "Nessun offerente!";
+            s = "<html><center><font color='#C17817'>" +
+                    "Nessuna squadra<br>ha partecipato<br>a questa asta!</font></center></html>";
+            backgroundLabel = new JLabel();
+            backgroundLabel.setBackground(UtilityClass.CUSTOM_BLACK);
+        }
+        else{
+            titolo = "Asta vinta da " + this.player.getName();
 
-        String s =  "<html><center><font color='#C17817'>" + this.player.getName() + " </font><br>" +
+            // Caricare l'immagine GIF come sfondo animato
+            backgroundIcon = new ImageIcon("software\\FUNtaPad\\resources\\images\\animated_background.gif");
+            backgroundLabel = new JLabel(backgroundIcon);
+
+            //Impostazione scritta vincitore
+            s =  "<html><center><font color='#C17817'>" + this.player.getName() + " </font><br>" +
                     "acquisisce le prestazioni<br>sportive di<br><font color='#C17817'>" +
                     this.footballer.getSurname() + "</font><br>per <font color='#C17817'>" + offer +
                     " </font>crediti</center></html>";
+        }
+
+        backgroundLabel.setBounds(0, 0, width, height);
+        setTitle(titolo);
 
         winLabel = new JLabel(s);
         winLabel.setBounds(0, winLabelY, width, winLabelHeight);
@@ -62,11 +77,11 @@ public class EndAuction extends JFrame{
         back = new JButton("Chiudi");
         back.setBounds((width - backWidth) / 2, (winLabelY + winLabelHeight + distanceFromLabel), backWidth, backHeight);
         back.setFont(UtilityClass.caricaFont(30));
-        back.setForeground(Color.BLACK);
-        back.setBackground(Color.GREEN);
+        back.setForeground(UtilityClass.CUSTOM_WHITE);
+        back.setBackground(UtilityClass.CUSTOM_GREEN);
         back.addActionListener(new EndAuctionListener());
         back.setFocusable(false);
-        back.setBorder(BorderFactory.createEtchedBorder());
+        back.setBorder(BorderFactory.createLineBorder(Color.black, 3));
         back.setVisible(true);
 
         // Aggiungere al frame

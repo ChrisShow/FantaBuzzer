@@ -142,7 +142,6 @@ public class PlayerFrame extends JFrame {
         backgroundLabel.setBounds(0, 0, width, height);
         backgroundLabel.setVisible(true);
         add(backgroundLabel);
-
         setVisible(true);
     }
 }
