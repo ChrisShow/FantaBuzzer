@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/software/FUNtaPad/FUNtaPad.iml" filepath="$PROJECT_DIR$/software/FUNtaPad/FUNtaPad.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/FantaBuzzer.iml" filepath="$PROJECT_DIR$/.idea/FantaBuzzer.iml" />
       <module fileurl="file://$PROJECT_DIR$/software/FUNtaPad/resources/resources.iml" filepath="$PROJECT_DIR$/software/FUNtaPad/resources/resources.iml" />
     </modules>

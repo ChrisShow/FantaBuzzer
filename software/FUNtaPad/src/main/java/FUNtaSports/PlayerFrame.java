@@ -139,7 +139,7 @@ public class PlayerFrame extends JFrame {
 
         // Imposta l'immagine di sfondo utilizzando un JLabel
         backgroundLabel = new JLabel(new ImageIcon(new ImageIcon(
-                "software\\FUNtaPad\\resources\\images\\playerFrameBg.jpg").getImage().
+                "software/FUNtaPad/src/main/resources/images/playerFrameBg.jpg").getImage().
                 getScaledInstance(width, height,Image.SCALE_SMOOTH)));
         backgroundLabel.setBounds(0, 0, width, height);
         backgroundLabel.setVisible(true);
