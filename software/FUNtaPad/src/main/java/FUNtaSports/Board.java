@@ -342,6 +342,7 @@ public class Board extends JFrame {
                 //new EndAuction(lastOfferPlayer, offer, actualFootballer, b);
                 skipTime.setEnabled(false);
                 fantaTimer.setSecondi(1);
+                firstStartTimer = true;
             }
         }
         
