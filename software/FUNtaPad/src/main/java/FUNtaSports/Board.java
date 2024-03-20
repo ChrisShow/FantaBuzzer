@@ -12,7 +12,9 @@ import javax.swing.*;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
-import com.pi4j.platform.*;
+import com.pi4j.io.gpio.*;
+import com.pi4j.io.gpio.event.*;
+import com.pi4j.io.gpio.event.GpioPinListener;
 import com.pi4j.util.Console;
 
 public class Board extends JFrame {
@@ -29,7 +31,8 @@ public class Board extends JFrame {
     private JLabel footballerTextLabel, footballerLabel;
     private GpioController gpioController;
     private GpioPinDigitalInput gpio00, gpio01, gpio02, gpio03, gpio04, gpio05, gpio06, gpio07, gpio08, gpio09,
-                                gpio10, gpio11, gpio12, gpio13, gpio14, gpio15, gpio16, gpio17, gpio18, gpio19;
+                                gpio10, gpio11, gpio13, gpio14, gpio15, gpio17, gpio18, gpio19, gpio22, gpio23,
+                                gpio24, gpio25, gpio26, gpio27;
 
 
     public Board(String stringTeams, int teams, int credits) {
@@ -168,7 +171,31 @@ public class Board extends JFrame {
 
         // Impostazione pin RaspBerry
         gpioController = GpioFactory.getInstance();
-
+        gpio00 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_00, PinPullResistance.PULL_DOWN);
+        gpio01 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_01, PinPullResistance.PULL_DOWN);
+        gpio02 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_02, PinPullResistance.PULL_DOWN);
+        gpio03 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_03, PinPullResistance.PULL_DOWN);
+        gpio04 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_DOWN);
+        gpio05 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_05, PinPullResistance.PULL_DOWN);
+        gpio06 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_06, PinPullResistance.PULL_DOWN);
+        gpio07 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07, PinPullResistance.PULL_DOWN);
+        gpio08 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_08, PinPullResistance.PULL_DOWN);
+        gpio09 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_09, PinPullResistance.PULL_DOWN);
+        gpio10 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_10, PinPullResistance.PULL_DOWN);
+        gpio11 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_11, PinPullResistance.PULL_DOWN);
+        gpio13 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_13, PinPullResistance.PULL_DOWN);
+        gpio14 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_14, PinPullResistance.PULL_DOWN);
+        gpio15 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_15, PinPullResistance.PULL_DOWN);
+        gpio17 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_17, PinPullResistance.PULL_DOWN);
+        gpio18 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_18, PinPullResistance.PULL_DOWN);
+        gpio19 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_19, PinPullResistance.PULL_DOWN);
+        gpio22 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_22, PinPullResistance.PULL_DOWN);
+        gpio23 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_23, PinPullResistance.PULL_DOWN);
+        gpio24 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_24, PinPullResistance.PULL_DOWN);
+        gpio25 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_25, PinPullResistance.PULL_DOWN);
+        gpio26 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_26, PinPullResistance.PULL_DOWN);
+        gpio27 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_27, PinPullResistance.PULL_DOWN);
+        gpio00.addListener();
 
         // setVisible di tutti i panel e frame
         controlPanel.setVisible(true);
@@ -185,18 +212,18 @@ public class Board extends JFrame {
         new EndAuction(lastOfferPlayer, offer, actualFootballer, this);
     }
 
-    private void newOffer(int num){
-        if(!firstStartTimer && validOffer(num)){
+    private void newOffer(int newOfferValue, int playerIndex){
+        if(!firstStartTimer && validOffer(newOfferValue)){
             int i = 0;
             for (Player player : players) {
-                if(i == num){
+                if(i == newOfferValue){
                     lastOfferPlayer = player;
                     this.fantaTimer.resetTimer();
                     this.offer += 2;
                     player.newOffer(this.offer);
                 }
                 else {
-                    if(players.get(num) != null)
+                    if(players.get(newOfferValue) != null)
                         if(player != null)
                             player.cancelOffer();
                 }
@@ -306,6 +333,7 @@ public class Board extends JFrame {
         Board board = new Board("s1-s2-s3-s4-s5-s6-null-null", 6, 500);
     }
 
+    /*
     private class BoardKeyboardListener implements KeyListener{
 
         @Override
@@ -324,6 +352,7 @@ public class Board extends JFrame {
         public void keyReleased(KeyEvent e) {}
         
     }
+    */
 
     private class BoardListener implements ActionListener{
 
@@ -356,4 +385,60 @@ public class Board extends JFrame {
         
     }
 
+    private class GpioListener implements GpioPinListenerDigital{
+
+        @Override
+        public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent gpioPinDigitalStateChangeEvent) {
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio00)
+                newOffer(1,6);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio01)
+                newOffer(10,5);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio02)
+                newOffer(1,0);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio03)
+                newOffer(5,0);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio04)
+                newOffer(10,0);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio05)
+                newOffer(5,6);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio06)
+                newOffer(10,6);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio07)
+                newOffer(5,5);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio08)
+                newOffer(1,5);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio09)
+                newOffer(5,2);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio10)
+                newOffer(1,2);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio11)
+                newOffer(10,2);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio13)
+                newOffer(1,7);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio14)
+                newOffer(1,3);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio15)
+                newOffer(5,3);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio17)
+                newOffer(1,1);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio18)
+                newOffer(10,3);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio19)
+                newOffer(5,7);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio22)
+                newOffer(10,1);
+if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio00)
+                newOffer(1,6);
+if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio00)
+                newOffer(1,6);
+if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio00)
+                newOffer(1,6);
+if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio00)
+                newOffer(1,6);
+if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio00)
+                newOffer(1,6);
+
+        }
+
+    }
 }
