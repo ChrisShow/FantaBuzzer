@@ -1,6 +1,5 @@
 package FUNtaSports;
 
-import org.apache.poi.ss.usermodel.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -8,10 +7,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.LinkedList;
 import javax.swing.*;
+import com.pi4j.io.gpio.GpioFactory;
+import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioPinDigitalInput;
+import com.pi4j.platform.*;
+import com.pi4j.util.Console;
 
 public class Board extends JFrame {
 
@@ -25,6 +27,10 @@ public class Board extends JFrame {
     private Footballer actualFootballer;
     private JPanel controlPanel, playersPanel, timerPanel;
     private JLabel footballerTextLabel, footballerLabel;
+    private GpioController gpioController;
+    private GpioPinDigitalInput gpio00, gpio01, gpio02, gpio03, gpio04, gpio05, gpio06, gpio07, gpio08, gpio09,
+                                gpio10, gpio11, gpio12, gpio13, gpio14, gpio15, gpio16, gpio17, gpio18, gpio19;
+
 
     public Board(String stringTeams, int teams, int credits) {
 
@@ -159,6 +165,10 @@ public class Board extends JFrame {
         //Preleva i gicatori dal listone e li salva come oggetti
         this.footballers = UtilityClass.initFootballers();
         this.actualFootballer = footballers.removeFirst();
+
+        // Impostazione pin RaspBerry
+        gpioController = GpioFactory.getInstance();
+
 
         // setVisible di tutti i panel e frame
         controlPanel.setVisible(true);
@@ -338,8 +348,6 @@ public class Board extends JFrame {
                 new SearchingFootballerFrame(footballers, b);
             }
             if(e.getSource() == skipTime){
-                //fantaTimer.resetTimer();
-                //new EndAuction(lastOfferPlayer, offer, actualFootballer, b);
                 skipTime.setEnabled(false);
                 fantaTimer.setSecondi(1);
                 firstStartTimer = true;
