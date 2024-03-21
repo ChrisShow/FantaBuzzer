@@ -8,6 +8,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.LinkedList;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.*;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioController;
@@ -34,11 +37,13 @@ public class Board extends JFrame {
                                 gpio10, gpio11, gpio13, gpio14, gpio15, gpio17, gpio18, gpio19, gpio22, gpio23,
                                 gpio24, gpio25, gpio26, gpio27;
 
+    private Semaphore semaphore;
 
     public Board(String stringTeams, int teams, int credits) {
 
         this.offer = 0;
         this.firstStartTimer = true;
+        this.semaphore = new Semaphore(1);
 
         /* GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int screenWidth = gd.getDisplayMode().getWidth();
@@ -53,7 +58,7 @@ public class Board extends JFrame {
         setResizable(true);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        addKeyListener(new BoardKeyboardListener());
+        //addKeyListener(new BoardKeyboardListener());
         setFocusable(true);
         requestFocus();
         //setBounds(0, 0, screenWidth, screenHeight);
@@ -170,6 +175,19 @@ public class Board extends JFrame {
         this.actualFootballer = footballers.removeFirst();
 
         // Impostazione pin RaspBerry
+        gpioInit();
+
+        // setVisible di tutti i panel e frame
+        controlPanel.setVisible(true);
+        playersPanel.setVisible(true);
+        timerPanel.setVisible(true);
+        add(controlPanel);
+        add(playersPanel);
+        add(timerPanel);
+        setVisible(true);
+        
+    }
+    public void gpioInit(){
         gpioController = GpioFactory.getInstance();
         gpio00 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_00, PinPullResistance.PULL_DOWN);
         gpio01 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_01, PinPullResistance.PULL_DOWN);
@@ -195,49 +213,66 @@ public class Board extends JFrame {
         gpio25 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_25, PinPullResistance.PULL_DOWN);
         gpio26 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_26, PinPullResistance.PULL_DOWN);
         gpio27 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_27, PinPullResistance.PULL_DOWN);
-        gpio00.addListener();
-
-        // setVisible di tutti i panel e frame
-        controlPanel.setVisible(true);
-        playersPanel.setVisible(true);
-        timerPanel.setVisible(true);
-        add(controlPanel);
-        add(playersPanel);
-        add(timerPanel);
-        setVisible(true);
-        
+        gpio00.addListener(new GpioListener());
+        gpio01.addListener(new GpioListener());
+        gpio02.addListener(new GpioListener());
+        gpio03.addListener(new GpioListener());
+        gpio04.addListener(new GpioListener());
+        gpio05.addListener(new GpioListener());
+        gpio06.addListener(new GpioListener());
+        gpio07.addListener(new GpioListener());
+        gpio08.addListener(new GpioListener());
+        gpio09.addListener(new GpioListener());
+        gpio10.addListener(new GpioListener());
+        gpio11.addListener(new GpioListener());
+        gpio13.addListener(new GpioListener());
+        gpio14.addListener(new GpioListener());
+        gpio15.addListener(new GpioListener());
+        gpio17.addListener(new GpioListener());
+        gpio18.addListener(new GpioListener());
+        gpio19.addListener(new GpioListener());
+        gpio22.addListener(new GpioListener());
+        gpio23.addListener(new GpioListener());
+        gpio24.addListener(new GpioListener());
+        gpio25.addListener(new GpioListener());
+        gpio26.addListener(new GpioListener());
+        gpio27.addListener(new GpioListener());
     }
-
     public void auctionTerminated(){
         new EndAuction(lastOfferPlayer, offer, actualFootballer, this);
     }
 
     private void newOffer(int newOfferValue, int playerIndex){
-        if(!firstStartTimer && validOffer(newOfferValue)){
-            int i = 0;
-            for (Player player : players) {
-                if(i == newOfferValue){
-                    lastOfferPlayer = player;
-                    this.fantaTimer.resetTimer();
-                    this.offer += 2;
-                    player.newOffer(this.offer);
-                }
-                else {
-                    if(players.get(newOfferValue) != null)
+        if(!firstStartTimer && validOffer(newOfferValue, playerIndex)){
+            try{
+                this.semaphore.acquire();
+                int i = 0;
+                for (Player player : players) {
+                    if(i == playerIndex){
+                        lastOfferPlayer = player;
+                        this.fantaTimer.resetTimer();
+                        this.offer += newOfferValue;
+                        player.newOffer(this.offer);
+                    }
+                    else {
                         if(player != null)
                             player.cancelOffer();
+                    }
+                    i++;
                 }
-                i++;
+                this.semaphore.release();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }
 
-    private boolean validOffer(int num) {
-        if(players.get(num) == null || players.get(num) == lastOfferPlayer || players.get(num).getCredits() < (this.offer+2)) return false;
-        if(actualFootballer.isGoalkeeper() && players.get(num).howManyGK() > 2) return false;
-        else if (actualFootballer.isDefender() && players.get(num).howManyDef() > 7) return false;
-        else if (actualFootballer.isMidfielder() && players.get(num).howManyMid() > 7) return false;
-        else if(actualFootballer.isAttacker() && players.get(num).howManyAtt() > 5) return false;
+    private boolean validOffer(int newOfferValue, int playerIndex) {
+        if(players.get(playerIndex) == null || players.get(playerIndex) == lastOfferPlayer || players.get(playerIndex).getCredits() < newOfferValue) return false;
+        if(actualFootballer.isGoalkeeper() && players.get(playerIndex).howManyGK() > 2) return false;
+        else if (actualFootballer.isDefender() && players.get(playerIndex).howManyDef() > 7) return false;
+        else if (actualFootballer.isMidfielder() && players.get(playerIndex).howManyMid() > 7) return false;
+        else if(actualFootballer.isAttacker() && players.get(playerIndex).howManyAtt() > 5) return false;
         return true;
     }
 
@@ -427,16 +462,16 @@ public class Board extends JFrame {
                 newOffer(5,7);
             if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio22)
                 newOffer(10,1);
-if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio00)
-                newOffer(1,6);
-if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio00)
-                newOffer(1,6);
-if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio00)
-                newOffer(1,6);
-if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio00)
-                newOffer(1,6);
-if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio00)
-                newOffer(1,6);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio23)
+                newOffer(1,4);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio24)
+                newOffer(5,4);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio25)
+                newOffer(10,4);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio26)
+                newOffer(10,7);
+            if(gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH && gpioPinDigitalStateChangeEvent.getSource() == gpio27)
+                newOffer(5,1);
 
         }
 
