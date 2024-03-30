@@ -18,10 +18,11 @@ public final class UtilityClass {
     public static final Color CUSTOM_LIGHT_BLUE = new Color(67, 124, 144);
     public static final Color CUSTOM_LIGHT_CYAN = new Color(140,251,222);
     public static final Color CUSTOM_BLUE = new Color(2,128,144);
+    public static final String RESOURCES_PATH = "src/main/resources";
 
     public static Font caricaFont(int size) {
         try {
-            Font font = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("src/main/resources/fonts/coolveticaRG.otf"));
+            Font font = Font.createFont(Font.TRUETYPE_FONT, new java.io.File(RESOURCES_PATH + File.separator + "fonts/coolveticaRG.otf"));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(font);
             return font.deriveFont(Font.PLAIN, size);
@@ -35,7 +36,7 @@ public final class UtilityClass {
         LinkedList<Footballer> footballers = new LinkedList<>();
         try {
             //String filePath = "software/FUNtaPad/resources/files/Quotazioni_Fantacalcio_Stagione_2023_24.xlsx";
-            String filePath = getClass().getResource("files/Quotazioni_Fantacalcio_Stagione_2023_24.xlsx").getPath();
+            String filePath = RESOURCES_PATH + File.separator + "files/Quotazioni_Fantacalcio_Stagione_2023_24.xlsx";
             FileInputStream fileInputStream = new FileInputStream(new File(filePath));
             Workbook workbook = WorkbookFactory.create(fileInputStream);
 
