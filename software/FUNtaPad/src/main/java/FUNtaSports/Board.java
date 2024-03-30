@@ -364,9 +364,9 @@ public class Board extends JFrame {
         this.actualFootballer = actualFootballer;
     }
 
-    public static void main(String[] args) {
-        Board board = new Board("s1-s2-s3-s4-s5-s6-null-null", 6, 500);
-    }
+//    public static void main(String[] args) {
+//        Board board = new Board("s1-s2-s3-s4-s5-s6-null-null", 6, 500);
+//    }
 
     /*
     private class BoardKeyboardListener implements KeyListener{
