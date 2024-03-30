@@ -21,7 +21,7 @@ public final class UtilityClass {
 
     public static Font caricaFont(int size) {
         try {
-            Font font = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("software/FUNtaPad/src/main/resources/fonts/coolveticaRG.otf"));
+            Font font = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("src/main/resources/fonts/coolveticaRG.otf"));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(font);
             return font.deriveFont(Font.PLAIN, size);
@@ -35,7 +35,7 @@ public final class UtilityClass {
         LinkedList<Footballer> footballers = new LinkedList<>();
         try {
             //String filePath = "software/FUNtaPad/resources/files/Quotazioni_Fantacalcio_Stagione_2023_24.xlsx";
-            String filePath = "software/FUNtaPad/src/main/resources/files/Quotazioni_Fantacalcio_Stagione_2023_24.xlsx";
+            String filePath = getClass().getResource("files/Quotazioni_Fantacalcio_Stagione_2023_24.xlsx").getPath();
             FileInputStream fileInputStream = new FileInputStream(new File(filePath));
             Workbook workbook = WorkbookFactory.create(fileInputStream);
 
