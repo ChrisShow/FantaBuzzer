@@ -175,7 +175,7 @@ public class Board extends JFrame {
         this.actualFootballer = footballers.removeFirst();
 
         // Impostazione pin RaspBerry
-        //gpioInit();
+        gpioInit();
 
         // setVisible di tutti i panel e frame
         controlPanel.setVisible(true);
@@ -244,25 +244,19 @@ public class Board extends JFrame {
 
     private void newOffer(int newOfferValue, int playerIndex){
         if(!firstStartTimer && validOffer(newOfferValue, playerIndex)){
-            try{
-                this.semaphore.acquire();
-                int i = 0;
-                for (Player player : players) {
-                    if(i == playerIndex){
-                        lastOfferPlayer = player;
-                        this.fantaTimer.resetTimer();
-                        this.offer += newOfferValue;
-                        player.newOffer(this.offer);
-                    }
-                    else {
-                        if(player != null)
-                            player.cancelOffer();
-                    }
-                    i++;
+            int i = 0;
+            for (Player player : players) {
+                if(i == playerIndex){
+                    lastOfferPlayer = player;
+                    this.fantaTimer.resetTimer();
+                    this.offer += newOfferValue;
+                    player.newOffer(this.offer);
                 }
-                this.semaphore.release();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                else {
+                    if(player != null)
+                        player.cancelOffer();
+                }
+                i++;
             }
         }
     }
@@ -379,7 +373,7 @@ public class Board extends JFrame {
             char keyChar = e.getKeyChar();
             if (keyChar >= '0' && keyChar < '8') {
                 int num = Character.getNumericValue(keyChar);
-                newOffer(num);
+                newOffer(num,2);
             }
         }
 

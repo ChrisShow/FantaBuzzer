@@ -1,11 +1,14 @@
 package FUNtaSports;
 
+import com.sun.tools.javac.Main;
 import org.apache.poi.ss.usermodel.*;
 import java.awt.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.file.FileSystems;
 import java.util.LinkedList;
 
 public final class UtilityClass {
@@ -19,10 +22,13 @@ public final class UtilityClass {
     public static final Color CUSTOM_LIGHT_CYAN = new Color(140,251,222);
     public static final Color CUSTOM_BLUE = new Color(2,128,144);
     public static final String RESOURCES_PATH = "src/main/resources";
+    public static final String SEPARATOR = FileSystems.getDefault().getSeparator();
 
     public static Font caricaFont(int size) {
         try {
-            Font font = Font.createFont(Font.TRUETYPE_FONT, new java.io.File(RESOURCES_PATH + File.separator + "fonts/coolveticaRG.otf"));
+            //String fontPath = "src" + SEPARATOR + "main" + SEPARATOR + "resources" + SEPARATOR + "fonts" + SEPARATOR + "coolveticaRG.otf";
+            InputStream inputStream = UtilityClass.class.getClassLoader().getResourceAsStream("fonts" + SEPARATOR + "coolveticaRG.otf");
+            Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(font);
             return font.deriveFont(Font.PLAIN, size);
@@ -35,9 +41,10 @@ public final class UtilityClass {
     public static LinkedList<Footballer> initFootballers(){
         LinkedList<Footballer> footballers = new LinkedList<>();
         try {
-            //String filePath = "software/FUNtaPad/resources/files/Quotazioni_Fantacalcio_Stagione_2023_24.xlsx";
-            String filePath = RESOURCES_PATH + File.separator + "files/Quotazioni_Fantacalcio_Stagione_2023_24.xlsx";
-            FileInputStream fileInputStream = new FileInputStream(new File(filePath));
+            //String filePath = "src" + SEPARATOR + "main" + SEPARATOR + "resources" + SEPARATOR + "files" + SEPARATOR + "giocatori.xlsx";
+            String fp = Main.class.getClassLoader().getResource("").getPath();
+            fp += SEPARATOR + "files" + SEPARATOR + "giocatori.xlsx";
+            FileInputStream fileInputStream = new FileInputStream(fp);
             Workbook workbook = WorkbookFactory.create(fileInputStream);
 
             // Assume che ci sia solo un foglio di lavoro (worksheet)

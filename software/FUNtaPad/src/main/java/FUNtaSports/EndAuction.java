@@ -56,7 +56,8 @@ public class EndAuction extends JFrame{
             titolo = "Asta vinta da " + this.player.getName();
 
             // Caricare l'immagine GIF come sfondo animato
-            backgroundIcon = new ImageIcon("software/FUNtaPad/src/main/resources/images/animated_background.gif");
+            String bgIconPath = "src" + UtilityClass.SEPARATOR + "main" + UtilityClass.SEPARATOR + "resources" + UtilityClass.SEPARATOR + "images" + UtilityClass.SEPARATOR + "animated_background.gif";
+            backgroundIcon = new ImageIcon(bgIconPath);
             backgroundLabel = new JLabel(backgroundIcon);
 
             //Impostazione scritta vincitore
