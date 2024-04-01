@@ -12,21 +12,11 @@
     <list default="true" id="cfd1f69c-ec5d-4079-ae4b-4c5d433f8735" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/FUNtaPad_jar/FUNtaPad.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/FUNtaPad_jar/FUNtaPad.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/FUNtaSports/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/FUNtaSports/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/FUNtaSports/EndAuction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/FUNtaSports/EndAuction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/FUNtaSports/PlayerFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/FUNtaSports/PlayerFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/FUNtaSports/UtilityClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/FUNtaSports/UtilityClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/files/Quotazioni_Fantacalcio_Stagione_2023_24.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/files/giocatori.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/FUNtaSports/Board$BoardListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/FUNtaSports/Board$BoardListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/FUNtaSports/Board$GpioListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/FUNtaSports/Board$GpioListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/FUNtaSports/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/FUNtaSports/Board.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/FUNtaSports/EndAuction$EndAuctionListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/FUNtaSports/EndAuction$EndAuctionListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/FUNtaSports/EndAuction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/FUNtaSports/EndAuction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/FUNtaSports/PlayerFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/FUNtaSports/PlayerFrame.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/FUNtaSports/UtilityClass$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/FUNtaSports/UtilityClass$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/FUNtaSports/UtilityClass.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/FUNtaSports/UtilityClass.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/files/Quotazioni_Fantacalcio_Stagione_2023_24.xlsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +50,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Artifacts",
+    "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.20689656",
     "settings.editor.selected.configurable": "preferences.updates",
@@ -114,7 +104,7 @@
       <updated>1711834551933</updated>
       <workItem from="1711834553067" duration="20000" />
       <workItem from="1711835010614" duration="2215000" />
-      <workItem from="1711893490938" duration="6965000" />
+      <workItem from="1711893490938" duration="10347000" />
     </task>
     <servers />
   </component>
