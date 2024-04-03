@@ -1,13 +1,15 @@
 package FUNtaSports;
 
 import com.sun.tools.javac.Main;
+import org.apache.poi.hssf.usermodel.HSSFWorkbookFactory;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+//import org.apache.poi.xssf.usermodel.XSSFWorkbookFactory;
 
 import java.awt.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.*;
+import java.net.URL;
 import java.nio.file.FileSystems;
 import java.util.LinkedList;
 
@@ -27,7 +29,7 @@ public final class UtilityClass {
     public static Font caricaFont(int size) {
         try {
             //String fontPath = "src" + SEPARATOR + "main" + SEPARATOR + "resources" + SEPARATOR + "fonts" + SEPARATOR + "coolveticaRG.otf";
-            InputStream inputStream = UtilityClass.class.getClassLoader().getResourceAsStream(SEPARATOR + "fonts" + SEPARATOR + "coolveticaRG.otf");
+            InputStream inputStream = UtilityClass.class.getClassLoader().getResourceAsStream("fonts" + SEPARATOR + "coolveticaRG.otf");
             Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(font);
@@ -41,20 +43,8 @@ public final class UtilityClass {
     public static LinkedList<Footballer> initFootballers(){
         LinkedList<Footballer> footballers = new LinkedList<>();
         try {
-            InputStream inputStream = UtilityClass.class.getClassLoader().getResourceAsStream(SEPARATOR + "files" + SEPARATOR + "giocatori.xlsx");
-            File tempFile = File.createTempFile("temp", ".tmp");
-            FileOutputStream outputStream = new FileOutputStream(tempFile);
-            byte[] buffer = new byte[8192];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
-            inputStream.close();
-            FileInputStream fileInputStream = new FileInputStream(tempFile);
-            //Workbook workbook = WorkbookFactory.create(fileInputStream);
-            Workbook workbook = new XSSFWorkbook(fileInputStream);
-
-            // Assume che ci sia solo un foglio di lavoro (worksheet)
+            InputStream inputStream = UtilityClass.class.getClassLoader().getResourceAsStream("files" + SEPARATOR + "giocatori.xls");
+            Workbook workbook = WorkbookFactory.create(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
 
             int i = 0;

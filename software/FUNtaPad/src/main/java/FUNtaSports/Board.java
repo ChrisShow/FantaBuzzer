@@ -175,7 +175,7 @@ public class Board extends JFrame {
         this.actualFootballer = footballers.removeFirst();
 
         // Impostazione pin RaspBerry
-        //gpioInit();
+        gpioInit();
 
         // setVisible di tutti i panel e frame
         controlPanel.setVisible(true);
