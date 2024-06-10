@@ -12,6 +12,8 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.*;
+
+/*
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
@@ -19,6 +21,17 @@ import com.pi4j.io.gpio.*;
 import com.pi4j.io.gpio.event.*;
 import com.pi4j.io.gpio.event.GpioPinListener;
 import com.pi4j.util.Console;
+ */
+
+import com.pi4j.Pi4J;
+import com.pi4j.boardinfo.util.BoardInfoHelper;
+import com.pi4j.context.Context;
+import com.pi4j.io.gpio.digital.DigitalInput;
+import com.pi4j.io.gpio.digital.DigitalInputConfigBuilder;
+import com.pi4j.io.gpio.digital.DigitalState;
+import com.pi4j.io.gpio.digital.PullResistance;
+import com.pi4j.util.Console;
+
 
 public class Board extends JFrame {
 
@@ -32,10 +45,40 @@ public class Board extends JFrame {
     private Footballer actualFootballer;
     private JPanel controlPanel, playersPanel, timerPanel;
     private JLabel footballerTextLabel, footballerLabel;
-    private GpioController gpioController;
-    private GpioPinDigitalInput gpio00, gpio01, gpio02, gpio03, gpio04, gpio05, gpio06, gpio07, gpio08, gpio09,
-                                gpio10, gpio11, gpio13, gpio14, gpio15, gpio17, gpio18, gpio19, gpio22, gpio23,
-                                gpio24, gpio25, gpio26, gpio27;
+    
+    //private GpioController gpioController;
+    private DigitalInput gpio00, gpio01, gpio02, gpio03, gpio04, gpio05, gpio06, gpio07, gpio08, gpio09,
+                         gpio10, gpio11, gpio13, gpio14, gpio15, gpio17, gpio18, gpio19, gpio22, gpio23,
+                         pio24, gpio25, gpio26, gpio27;
+
+    private static final int PIN00 = 11; // PIN00 = BCM 11
+    private static final int PIN01 = 12; // PIN01 = BCM 12
+    private static final int PIN02 = 13; // PIN02 = BCM 13
+    private static final int PIN03 = 15; // PIN03 = BCM 15
+    private static final int PIN04 = 16; // PIN04 = BCM 16
+    private static final int PIN05 = 18; // PIN05 = BCM 18
+    private static final int PIN06 = 22; // PIN06 = BCM 22
+    private static final int PIN07 = 7; // PIN07 = BCM 7
+    private static final int PIN08 = 3; // PIN01 = BCM 3
+    private static final int PIN09 = 5; // PIN09 = BCM 5
+    private static final int PIN10 = 24; // PIN10 = BCM 24
+    private static final int PIN11 = 26; // PIN11 = BCM 26
+    private static final int PIN12 = 19; // PIN12 = BCM 19
+    private static final int PIN13 = 21; // PIN13 = BCM 21
+    private static final int PIN14 = 23; // PIN14 = BCM 23
+    private static final int PIN15 = 8; // PIN15 = BCM 8
+    private static final int PIN16 = 10; // PIN16 = BCM 10
+    private static final int PIN21 = 29; // PIN021 = BCM 29
+    private static final int PIN22 = 31; // PIN022 = BCM 31
+    private static final int PIN23 = 33; // PIN023 = BCM 33
+    private static final int PIN24 = 35; // PIN24 = BCM 35
+    private static final int PIN25 = 37; // PIN25 = BCM 37
+    private static final int PIN26 = 32; // PIN26 = BCM 32
+    private static final int PIN27 = 36; // PIN27 = BCM 36
+    private static final int PIN28 = 38; // PIN28 = BCM 38
+    private static final int PIN29 = 40; // PIN29 = BCM 40
+    private Context pi4j;
+
 
     private Semaphore semaphore;
 
@@ -187,7 +230,19 @@ public class Board extends JFrame {
         setVisible(true);
         
     }
+    
     public void gpioInit(){
+        pi4j = Pi4J.newAutoContext();
+        DigitalInputConfigBuilder digitalInputConfigBuilder00 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin00")
+            .name("GPIO00")
+            .address(PIN00)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio00 = pi4j.create(digitalInputConfigBuilder00);
+
+
+        /* 
         gpioController = GpioFactory.getInstance();
         gpio00 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_01, PinPullResistance.PULL_DOWN);
         gpio01 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_02, PinPullResistance.PULL_DOWN);
@@ -237,6 +292,7 @@ public class Board extends JFrame {
         gpio25.addListener(new GpioListener());
         gpio26.addListener(new GpioListener());
         gpio27.addListener(new GpioListener());
+        */
     }
     public void auctionTerminated(){
         new EndAuction(lastOfferPlayer, offer, actualFootballer, this);
@@ -414,7 +470,7 @@ public class Board extends JFrame {
         
     }
 
-    private class GpioListener implements GpioPinListenerDigital{
+    /*private class GpioListener implements GpioPinListenerDigital{
 
         @Override
         public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent gpioPinDigitalStateChangeEvent) {
@@ -469,5 +525,5 @@ public class Board extends JFrame {
 
         }
 
-    }
+    }*/
 }
