@@ -1,7 +1,10 @@
 package FUNtaSports;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class PlayerFrame extends JFrame {
     private Player player;
@@ -138,14 +141,16 @@ public class PlayerFrame extends JFrame {
         }
 
         // Imposta l'immagine di sfondo utilizzando un JLabel
-        String bgLabelPath = "src" + UtilityClass.SEPARATOR + "main" + UtilityClass.SEPARATOR + "resources" + UtilityClass.SEPARATOR + "images" + UtilityClass.SEPARATOR + "playerFrameBg.jpg";
-        backgroundLabel = new JLabel(new ImageIcon(new ImageIcon(
-                bgLabelPath).getImage().
-                getScaledInstance(width, height,Image.SCALE_SMOOTH)));
-        backgroundLabel.setBounds(0, 0, width, height);
-        backgroundLabel.setVisible(true);
-        add(backgroundLabel);
-        setVisible(true);
+        try {
+            backgroundLabel = new JLabel(new ImageIcon(new ImageIcon(ImageIO.read(getClass().getResourceAsStream("images" + UtilityClass.SEPARATOR + "playerFrameBg.jpg"))).getImage().getScaledInstance(width, height,Image.SCALE_SMOOTH)));
+            backgroundLabel.setBounds(0, 0, width, height);
+            backgroundLabel.setVisible(true);
+            add(backgroundLabel);
+            setVisible(true);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
 

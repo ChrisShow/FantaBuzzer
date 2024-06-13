@@ -8,21 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.LinkedList;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.*;
-
-/*
-import com.pi4j.io.gpio.GpioFactory;
-import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioPinDigitalInput;
-import com.pi4j.io.gpio.*;
-import com.pi4j.io.gpio.event.*;
-import com.pi4j.io.gpio.event.GpioPinListener;
-import com.pi4j.util.Console;
- */
-
 import com.pi4j.Pi4J;
 import com.pi4j.boardinfo.util.BoardInfoHelper;
 import com.pi4j.context.Context;
@@ -46,10 +32,9 @@ public class Board extends JFrame {
     private JPanel controlPanel, playersPanel, timerPanel;
     private JLabel footballerTextLabel, footballerLabel;
     
-    //private GpioController gpioController;
     private DigitalInput gpio00, gpio01, gpio02, gpio03, gpio04, gpio05, gpio06, gpio07, gpio08, gpio09,
-                         gpio10, gpio11, gpio13, gpio14, gpio15, gpio17, gpio18, gpio19, gpio22, gpio23,
-                         pio24, gpio25, gpio26, gpio27;
+                         gpio10, gpio11, gpio12, gpio13, gpio14, gpio15, gpio16, gpio21, gpio22, gpio23,
+                         gpio24, gpio25, gpio26, gpio27, gpio28, gpio29;
 
     private static final int PIN00 = 11; // PIN00 = BCM 11
     private static final int PIN01 = 12; // PIN01 = BCM 12
@@ -79,14 +64,10 @@ public class Board extends JFrame {
     private static final int PIN29 = 40; // PIN29 = BCM 40
     private Context pi4j;
 
-
-    private Semaphore semaphore;
-
     public Board(String stringTeams, int teams, int credits) {
 
         this.offer = 0;
         this.firstStartTimer = true;
-        this.semaphore = new Semaphore(1);
 
         /* GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int screenWidth = gd.getDisplayMode().getWidth();
@@ -231,8 +212,11 @@ public class Board extends JFrame {
         
     }
     
-    public void gpioInit(){
+    private void gpioInit(){
+        // Inizializzo il contesto della libreria PI4J
         pi4j = Pi4J.newAutoContext();
+
+        // Creo oggetto pin00
         DigitalInputConfigBuilder digitalInputConfigBuilder00 = DigitalInput.newConfigBuilder(pi4j)
             .id("pin00")
             .name("GPIO00")
@@ -241,57 +225,236 @@ public class Board extends JFrame {
             .debounce(1000L);
         gpio00 = pi4j.create(digitalInputConfigBuilder00);
 
+        // Creo oggetto pin01
+        DigitalInputConfigBuilder digitalInputConfigBuilder01 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin01")
+            .name("GPIO01")
+            .address(PIN01)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio01 = pi4j.create(digitalInputConfigBuilder01);
+        
+        // Creo oggetto pin02
+        DigitalInputConfigBuilder digitalInputConfigBuilder02 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin02")
+            .name("GPIO02")
+            .address(PIN02)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio02 = pi4j.create(digitalInputConfigBuilder02);
+
+        // Creo oggetto pin03
+        DigitalInputConfigBuilder digitalInputConfigBuilder03 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin03")
+            .name("GPIO03")
+            .address(PIN03)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio03 = pi4j.create(digitalInputConfigBuilder03);
+
+        // Creo oggetto pin04
+        DigitalInputConfigBuilder digitalInputConfigBuilder04 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin04")
+            .name("GPIO04")
+            .address(PIN04)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio04 = pi4j.create(digitalInputConfigBuilder04);
+
+        // Creo oggetto pin05
+        DigitalInputConfigBuilder digitalInputConfigBuilder05 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin05")
+            .name("GPIO05")
+            .address(PIN05)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio05 = pi4j.create(digitalInputConfigBuilder05);
+
+        // Creo oggetto pin06
+        DigitalInputConfigBuilder digitalInputConfigBuilder06 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin06")
+            .name("GPIO06")
+            .address(PIN06)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio06 = pi4j.create(digitalInputConfigBuilder06);
+
+        // Creo oggetto pin07
+        DigitalInputConfigBuilder digitalInputConfigBuilder07 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin07")
+            .name("GPIO07")
+            .address(PIN07)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio07 = pi4j.create(digitalInputConfigBuilder07);
+
+        // Creo oggetto pin08
+        DigitalInputConfigBuilder digitalInputConfigBuilder08 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin08")
+            .name("GPIO08")
+            .address(PIN08)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio08 = pi4j.create(digitalInputConfigBuilder08);
+
+        // Creo oggetto pin09
+        DigitalInputConfigBuilder digitalInputConfigBuilder09 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin09")
+            .name("GPIO09")
+            .address(PIN09)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio09 = pi4j.create(digitalInputConfigBuilder09);
+
+        // Creo oggetto pin10
+        DigitalInputConfigBuilder digitalInputConfigBuilder10 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin10")
+            .name("GPIO10")
+            .address(PIN10)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio10 = pi4j.create(digitalInputConfigBuilder10);
+
+        // Creo oggetto pin11
+        DigitalInputConfigBuilder digitalInputConfigBuilder11 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin11")
+            .name("GPIO11")
+            .address(PIN11)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio11 = pi4j.create(digitalInputConfigBuilder11);
+
+        // Creo oggetto pin12
+        DigitalInputConfigBuilder digitalInputConfigBuilder12 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin12")
+            .name("GPIO12")
+            .address(PIN12)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio12 = pi4j.create(digitalInputConfigBuilder12);
+
+        // Creo oggetto pin13
+        DigitalInputConfigBuilder digitalInputConfigBuilder13 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin13")
+            .name("GPIO13")
+            .address(PIN13)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio13 = pi4j.create(digitalInputConfigBuilder13);
+
+        // Creo oggetto pin14
+        DigitalInputConfigBuilder digitalInputConfigBuilder14 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin14")
+            .name("GPIO14")
+            .address(PIN14)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio14 = pi4j.create(digitalInputConfigBuilder14);
+
+        // Creo oggetto pin15
+        DigitalInputConfigBuilder digitalInputConfigBuilder15 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin15")
+            .name("GPIO15")
+            .address(PIN15)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio15 = pi4j.create(digitalInputConfigBuilder15);
+
+        // Creo oggetto pin16
+        DigitalInputConfigBuilder digitalInputConfigBuilder16 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin16")
+            .name("GPIO16")
+            .address(PIN16)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio16 = pi4j.create(digitalInputConfigBuilder16);
+
+        // Creo oggetto pin21
+        DigitalInputConfigBuilder digitalInputConfigBuilder21 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin21")
+            .name("GPIO21")
+            .address(PIN21)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio21 = pi4j.create(digitalInputConfigBuilder21);
+
+        // Creo oggetto pin22
+        DigitalInputConfigBuilder digitalInputConfigBuilder22 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin22")
+            .name("GPIO22")
+            .address(PIN22)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio22 = pi4j.create(digitalInputConfigBuilder22);
+
+        // Creo oggetto pin23
+        DigitalInputConfigBuilder digitalInputConfigBuilder23 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin23")
+            .name("GPIO23")
+            .address(PIN23)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio23 = pi4j.create(digitalInputConfigBuilder23);
+
+        // Creo oggetto pin24
+        DigitalInputConfigBuilder digitalInputConfigBuilder24 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin24")
+            .name("GPIO24")
+            .address(PIN24)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio24 = pi4j.create(digitalInputConfigBuilder24);
+
+        // Creo oggetto pin25
+        DigitalInputConfigBuilder digitalInputConfigBuilder25 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin25")
+            .name("GPIO25")
+            .address(PIN25)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio25 = pi4j.create(digitalInputConfigBuilder25);
+
+        // Creo oggetto pin26
+        DigitalInputConfigBuilder digitalInputConfigBuilder26 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin26")
+            .name("GPIO26")
+            .address(PIN26)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio26 = pi4j.create(digitalInputConfigBuilder26);
+
+        // Creo oggetto pin27
+        DigitalInputConfigBuilder digitalInputConfigBuilder27 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin27")
+            .name("GPIO27")
+            .address(PIN27)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio27 = pi4j.create(digitalInputConfigBuilder27);
+
+        // Creo oggetto pin28
+        DigitalInputConfigBuilder digitalInputConfigBuilder28 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin28")
+            .name("GPIO28")
+            .address(PIN28)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio28 = pi4j.create(digitalInputConfigBuilder28);
+
+        // Creo oggetto pin29
+        DigitalInputConfigBuilder digitalInputConfigBuilder29 = DigitalInput.newConfigBuilder(pi4j)
+            .id("pin29")
+            .name("GPIO29")
+            .address(PIN29)
+            .pull(PullResistance.PULL_DOWN)
+            .debounce(1000L);
+        gpio29 = pi4j.create(digitalInputConfigBuilder29);
+
 
         /* 
         gpioController = GpioFactory.getInstance();
         gpio00 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_01, PinPullResistance.PULL_DOWN);
-        gpio01 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_02, PinPullResistance.PULL_DOWN);
-        gpio02 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_03, PinPullResistance.PULL_DOWN);
-        gpio03 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_DOWN);
-        gpio04 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_05, PinPullResistance.PULL_DOWN);
-        gpio05 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_06, PinPullResistance.PULL_DOWN);
-        gpio06 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07, PinPullResistance.PULL_DOWN);
-        gpio07 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_08, PinPullResistance.PULL_DOWN);
-        gpio08 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_09, PinPullResistance.PULL_DOWN);
-        gpio09 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_10, PinPullResistance.PULL_DOWN);
-        gpio10 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_11, PinPullResistance.PULL_DOWN);
-        gpio11 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_12, PinPullResistance.PULL_DOWN);
-        gpio13 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_13, PinPullResistance.PULL_DOWN);
-        gpio14 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_15, PinPullResistance.PULL_DOWN);
-        gpio15 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_16, PinPullResistance.PULL_DOWN);
-        gpio17 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_18, PinPullResistance.PULL_DOWN);
-        gpio18 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_19, PinPullResistance.PULL_DOWN);
-        gpio19 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_20, PinPullResistance.PULL_DOWN);
-        gpio22 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_23, PinPullResistance.PULL_DOWN);
-        gpio23 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_24, PinPullResistance.PULL_DOWN);
-        gpio24 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_25, PinPullResistance.PULL_DOWN);
-        gpio25 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_26, PinPullResistance.PULL_DOWN);
-        gpio26 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_27, PinPullResistance.PULL_DOWN);
-        gpio27 = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_28, PinPullResistance.PULL_DOWN);
         gpio00.addListener(new GpioListener());
-        gpio01.addListener(new GpioListener());
-        gpio02.addListener(new GpioListener());
-        gpio03.addListener(new GpioListener());
-        gpio04.addListener(new GpioListener());
-        gpio05.addListener(new GpioListener());
-        gpio06.addListener(new GpioListener());
-        gpio07.addListener(new GpioListener());
-        gpio08.addListener(new GpioListener());
-        gpio09.addListener(new GpioListener());
-        gpio10.addListener(new GpioListener());
-        gpio11.addListener(new GpioListener());
-        gpio13.addListener(new GpioListener());
-        gpio14.addListener(new GpioListener());
-        gpio15.addListener(new GpioListener());
-        gpio17.addListener(new GpioListener());
-        gpio18.addListener(new GpioListener());
-        gpio19.addListener(new GpioListener());
-        gpio22.addListener(new GpioListener());
-        gpio23.addListener(new GpioListener());
-        gpio24.addListener(new GpioListener());
-        gpio25.addListener(new GpioListener());
-        gpio26.addListener(new GpioListener());
-        gpio27.addListener(new GpioListener());
         */
     }
     public void auctionTerminated(){

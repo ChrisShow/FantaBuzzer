@@ -28,7 +28,6 @@ public final class UtilityClass {
 
     public static Font caricaFont(int size) {
         try {
-            //String fontPath = "src" + SEPARATOR + "main" + SEPARATOR + "resources" + SEPARATOR + "fonts" + SEPARATOR + "coolveticaRG.otf";
             InputStream inputStream = UtilityClass.class.getClassLoader().getResourceAsStream("fonts" + SEPARATOR + "coolveticaRG.otf");
             Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
