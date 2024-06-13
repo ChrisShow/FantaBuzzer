@@ -3,7 +3,9 @@ package FUNtaSports;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -56,9 +58,13 @@ public class EndAuction extends JFrame{
             titolo = "Asta vinta da " + this.player.getName();
 
             // Caricare l'immagine GIF come sfondo animato
-            String bgIconPath = "src" + UtilityClass.SEPARATOR + "main" + UtilityClass.SEPARATOR + "resources" + UtilityClass.SEPARATOR + "images" + UtilityClass.SEPARATOR + "animated_background.gif";
-            backgroundIcon = new ImageIcon(bgIconPath);
-            backgroundLabel = new JLabel(backgroundIcon);
+            try {
+                backgroundIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("images" + UtilityClass.SEPARATOR + "animated_background.gif")));            
+                backgroundLabel = new JLabel(backgroundIcon);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
             //Impostazione scritta vincitore
             s =  "<html><center><font color='#C17817'>" + this.player.getName() + " </font><br>" +
